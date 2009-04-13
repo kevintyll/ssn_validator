@@ -1,0 +1,15 @@
+History.txt
+Manifest.txt
+PostInstall.txt
+README.rdoc
+Rakefile
+generators/ssn_validator_migration/templates/migration.rb
+generators/ssn_validator_migration/ssn_validator_migration_generator.rb
+lib/ssn_validator/models/ssn_high_group_code.rb
+lib/ssn_validator.rb
+lib/tasks/ssn_validator.rake
+script/console
+script/destroy
+script/generate
+test/test_helper.rb
+test/test_ssn_validator.rb
