@@ -2,6 +2,10 @@ require 'activerecord'
 require 'net/http'
 class SsnHighGroupCode < ActiveRecord::Base
 
+  ###############
+  #class mehtods#
+  ###############
+
   def self.load_historical_high_group_codes_file
     ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'].each do |month|
       (1..10).each do |day|
@@ -35,7 +39,19 @@ class SsnHighGroupCode < ActiveRecord::Base
   def self.already_loaded?(file_as_of_date)
     self.find_by_as_of(file_as_of_date)
   end
+  ###################
+  #end class mehtods#
+  ###################
 
+  ##################
+  #instance mehtods#
+  ##################
+
+  
+
+  ######################
+  #end instance mehtods#
+  ######################
   private
 
   def self.create_records(area_groups,file_as_of)

@@ -1,7 +1,8 @@
 
-For more information on ssn_validator, see http://ssn_validator.rubyforge.org
+For more information on ssn_validator, see http://kevintyll.github.com/ssn_validator/
 
-NOTE: Change this information in PostInstall.txt 
-You can also delete it if you don't want it.
+* To create the necessary db migration, from the command line, run:  script/generate ssn_validator_migration
+* To load your table with the current SSN data, from the command line, run:  rake ssn_validator:update_data
+* The SSN data is updated monthly, so you'll want to run this rake task monthly to keep your validations accurate.
 
 

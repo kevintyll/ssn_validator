@@ -1,32 +1,50 @@
 = ssn_validator
 
-* FIX (url)
+* http://kevintyll.github.com/ssn_validator/
 
 == DESCRIPTION:
 
-FIX (describe your package)
+A ruby gem that validates whether an SSN has likely been issued or not.
+
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Validates the likelyhood that an SSN has been issued to someone.
+
+* What it cannot do:
+    Validate that an SSN actually belongs to a particular person.
+
+* What it's planned to do if I can find the data:
+    Determine when an SSN was issued.  This can be used to further validate an SSN by comparing it to a Date of Birth.
+    Check the Death Master File if the SSN belongs to a dead person.
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  Just instantiate the object with an SSN.
+    ssn = SsnValidator::Ssn.new('123-45-6789')
+
+  Then check if it's valid
+    ssn.valid?
+
+  You can check the errors array to see why it's not valid.
+    ssn.errors
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* Rails 2.0.0 or greater
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install kevintyll-ssn_validator
+* To create the necessary db migration, from the command line, run:  script/generate ssn_validator_migration
+* To load your table with the current SSN data, from the command line, run:  rake ssn_validator:update_data
+* The SSN data is updated monthly, so you'll want to run this rake task monthly to keep your validations accurate.
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 FIXME full name
+Copyright (c) 2009 Kevin Tyll
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

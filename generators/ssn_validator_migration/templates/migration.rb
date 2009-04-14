@@ -9,7 +9,7 @@ class CreateSsnValidatorTables < ActiveRecord::Migration
     end
     
     add_index :ssn_high_group_codes, [:area]
-    add_index :ssn_high_group_codes, [:area, :group]
+    add_index :ssn_high_group_codes, [:area, :as_of]
   end
   
   def self.down

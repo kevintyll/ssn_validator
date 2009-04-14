@@ -6,8 +6,7 @@ require File.dirname(__FILE__) + '/lib/ssn_validator'
 $hoe = Hoe.new('ssn_validator', SsnValidator::VERSION) do |p|
   p.developer('Kevin Tyll', 'kevintyll@gmail.com')
   p.changes              = p.paragraphs_of("History.txt", 0..1).join("\n\n")
-  p.post_install_message = 'PostInstall.txt' # TODO remove if post-install message not required
-  p.rubyforge_name       = p.name # TODO this is default value
+  p.post_install_message = 'PostInstall.txt'
    p.extra_deps         = [
      ['activerecord','>= 2.0.0'],
    ]
@@ -24,5 +23,3 @@ end
 require 'newgem/tasks' # load /tasks/*.rake
 Dir['tasks/**/*.rake'].each { |t| load t }
 
-# TODO - want other tests/tasks run by default? Add them to the list
-# task :default => [:spec, :features]
