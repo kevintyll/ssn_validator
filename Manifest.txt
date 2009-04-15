@@ -14,3 +14,4 @@ script/destroy
 script/generate
 test/test_helper.rb
 test/test_ssn_validator.rb
+test/test_ssn_high_group_code.rb
