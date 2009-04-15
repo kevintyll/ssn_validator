@@ -2,3 +2,9 @@
 
 * 1 major enhancement:
   * Initial release
+
+== 0.1.2 2009-15-14
+
+* 2 minor enhancements:
+  * Added rdoc files
+  * Updated documentation

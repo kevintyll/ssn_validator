@@ -1,32 +1,43 @@
 = ssn_validator
 
-* http://kevintyll.github.com/ssn_validator/
+* http://kevintyll.github.com/ssn_validator
+* http://www.drexel-labs.com
 
 == DESCRIPTION:
 
-A ruby gem that validates whether an SSN has likely been issued or not.
+ssn_validator is a ruby gem that validates whether an SSN has likely been issued or not.
+What exactly does that mean "likely" been issued?  We can't tell for sure if an SSN belongs
+to a particular person, but knowing the "rules"[http://www.socialsecurity.gov/employer/ssnweb.htm]
+on how the social security administration assigns numbers, we can determine whether a number
+has ever been issued or not.
+
+ssn_validator started as a need for the company I work for, Clarity Services Inc.  Incredibly, we
+couldn't find an existing gem or service that provided what we needed.  Since we were going to have
+to role our own solution, we decided to create a gem out of it and share it with the community.  Much
+thanks goes to the management at Clarity Services Inc. for allowing this code to be open sourced.
 
 
 == FEATURES/PROBLEMS:
 
-* Validates the likelyhood that an SSN has been issued to someone.
+* What it can do:
+    Validates the likelyhood that an SSN has been issued to someone.
 
 * What it cannot do:
     Validate that an SSN actually belongs to a particular person.
 
-* What it's planned to do if I can find the data:
-    Determine when an SSN was issued.  This can be used to further validate an SSN by comparing it to a Date of Birth.
-    Check the Death Master File if the SSN belongs to a dead person.
+* What it's planned to do:
+    Determine when an SSN was issued...if i can find the historical data.  This can be used to further validate an SSN by comparing it to a Date of Birth.
+    Check the Death Master File if the SSN belongs to a dead person.  This will require you to purchase the dmf data from https://dmf.ntis.gov 
 
 == SYNOPSIS:
 
-  Just instantiate the object with an SSN.
+* Just instantiate the object with an SSN.
     ssn = SsnValidator::Ssn.new('123-45-6789')
 
-  Then check if it's valid
+* Then check if it's valid
     ssn.valid?
 
-  You can check the errors array to see why it's not valid.
+* You can check the errors array to see why it's not valid.
     ssn.errors
 
 == REQUIREMENTS:
@@ -35,9 +46,14 @@ A ruby gem that validates whether an SSN has likely been issued or not.
 
 == INSTALL:
 
-* sudo gem install kevintyll-ssn_validator
-* To create the necessary db migration, from the command line, run:  script/generate ssn_validator_migration
-* To load your table with the current SSN data, from the command line, run:  rake ssn_validator:update_data
+* To install the gem:
+    sudo gem install kevintyll-ssn_validator
+* To create the necessary db migration, from the command line, run:
+    script/generate ssn_validator_migration
+* Require the gem in your environment.rb file in the Rails::Initializer block:
+    config.gem 'ssn_validator'
+* To load your table with the current SSN data, from the command line, run:
+    rake ssn_validator:update_data
 * The SSN data is updated monthly, so you'll want to run this rake task monthly to keep your validations accurate.
 
 == LICENSE:

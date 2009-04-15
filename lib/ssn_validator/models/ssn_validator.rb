@@ -5,6 +5,8 @@ module SsnValidator
     attr_reader :errors
 
 
+    #Instantiate the object passing in a social security number.
+    #The ssn can be a string or integer, with or without the '-'s.
     def initialize(ssn)
       @errors = []
       ssn = ssn.to_s
@@ -52,6 +54,8 @@ module SsnValidator
 
     end
 
+    #Determines whether or not the passed in
+    #ssn passed all validations.
     def valid?
       @errors.empty?
     end

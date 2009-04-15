@@ -1,6 +1,6 @@
 spec = Gem::Specification.new do |s|
   s.name = "ssn_validator"
-  s.version = "0.1.1"
+  s.version = "0.1.2"
   s.date = "2009-04-13"
   s.author = "Kevin Tyll"
   s.email = "kevintyll@gmail.com"
@@ -27,8 +27,8 @@ spec = Gem::Specification.new do |s|
   ]
   s.test_files = [
     "test/test_helper.rb",
-"test/test_ssn_validator.rb",
-"test/test_ssn_high_group_code.rb"
+    "test/test_ssn_validator.rb",
+    "test/test_ssn_high_group_code.rb"
   ]
   s.require_paths = ["."]
   s.has_rdoc = true
