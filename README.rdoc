@@ -51,7 +51,7 @@ thanks goes to the management at Clarity Services Inc. for allowing this code to
 * To create the necessary db migration, from the command line, run:
     script/generate ssn_validator_migration
 * Require the gem in your environment.rb file in the Rails::Initializer block:
-    config.gem 'ssn_validator'
+    config.gem 'kevintyll-ssn_validator', :lib => 'ssn_validator'
 * To load your table with the current SSN data, from the command line, run:
     rake ssn_validator:update_data
 * The SSN data is updated monthly, so you'll want to run this rake task monthly to keep your validations accurate.
