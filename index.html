@@ -6,12 +6,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 	<title>kevintyll/ssn_validator @ GitHub</title>
-	
+
 	<style type="text/css">
 		body {
   		margin-top: 1.0em;
   		background-color: #0000CC;
-		  font-family: "helvetica"; 
+		  font-family: "helvetica";
   		color: #ffffff;
     }
     #container {
@@ -30,12 +30,12 @@
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
 	</style>
-	
+
 </head>
 
 <body>
   <a href="http://github.com/kevintyll/ssn_validator"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-  
+
   <div id="container">
 
     <div class="download">
@@ -44,59 +44,24 @@
       <a href="http://github.com/kevintyll/ssn_validator/tarball/master">
         <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
     </div>
-      
-    <h1><a href="http://github.com/kevintyll/ssn_validator">ssn_validator</a> 
+
+    <h1><a href="http://github.com/kevintyll/ssn_validator">ssn_validator</a>
       <span class="small">by <a href="http://github.com/kevintyll">kevintyll</a></small></h1>
 
     <div class="description">
-      * Validates the likelyhood that an SSN has been issued to someone.
+      <p>ssn_validator is a ruby gem that validates whether an SSN has likely been issued or not.
+What exactly does that mean "likely" been issued?  We can't tell for sure if an SSN belongs
+to a particular person, but knowing the <a href="http://www.socialsecurity.gov/employer/ssnweb.htm">"rules"</a>
+on how the social security administration assigns numbers, we can determine whether a number
+      has ever been issued or not.</p>
 
-      * What it cannot do:  
-          Validate that an SSN actually belongs to a particular person.
-
-      * What it's planned to do if I can find the data:
-          Determine when an SSN was issued.  This can be used to further validate an SSN by comparing it to a Date of Birth.
-          Check the Death Master File if the SSN belongs to a dead person.
+<p>ssn_validator started as a need for the company I work for, Clarity Services Inc.  Incredibly, we
+couldn't find an existing gem or service that provided what we needed.  Since we were going to have
+to role our own solution, we decided to create a gem out of it and share it with the community.  Much
+thanks goes to the management at Clarity Services Inc. for allowing this code to be open sourced.</p>
     </div>
 
-   <h2>Usage</h2>
-  Just instantiate the object with an SSN.
-    ssn = SsnValidator::Ssn.new('123-45-6789')
-
-  Then check if it's valid
-    ssn.valid?
-
-  You can check the errors array to see why it's not valid.
-    ssn.errors
-
-    <h2>Dependencies</h2>
-<p>Rails 2.0 or greater</p>
-<h2>Install</h2>
-<p>sudo gem install kevintyll-ssn_validator</p>
-<h2>License</h2>
-<p>(The MIT License)
-
-Copyright (c) 2009 Kevin Tyll
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-<h2>Authors</h2>
+<h2>Author</h2>
 <p>Kevin Tyll  </p>
 <h2>Contact</h2>
 <p>Kevin Tyll (kevintyll@gmail.com)
@@ -113,13 +78,13 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
       by running:
       <pre>$ git clone git://github.com/kevintyll/ssn_validator</pre>
     </p>
-      
+
     <div class="footer">
       get the source code on GitHub : <a href="http://github.com/kevintyll/ssn_validator">kevintyll/ssn_validator</a>
     </div>
-    
+
   </div>
 
-  
+
 </body>
 </html>
