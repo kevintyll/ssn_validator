@@ -13,7 +13,7 @@ has ever been issued or not.
 
 ssn_validator started as a need for the company I work for, Clarity Services Inc.  Incredibly, we
 couldn't find an existing gem or service that provided what we needed.  Since we were going to have
-to role our own solution, we decided to create a gem out of it and share it with the community.  Much
+to roll our own solution, we decided to create a gem out of it and share it with the community.  Much
 thanks goes to the management at Clarity Services Inc. for allowing this code to be open sourced.
 
 
