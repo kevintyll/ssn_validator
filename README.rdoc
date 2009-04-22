@@ -21,13 +21,13 @@ thanks goes to the management at Clarity Services Inc. for allowing this code to
 
 * What it can do:
     Validates the likelyhood that an SSN has been issued to someone.
+    Checks the Death Master File if the SSN belongs to a dead person.  This will require you to purchase the dmf data from https://dmf.ntis.gov
 
 * What it cannot do:
     Validate that an SSN actually belongs to a particular person.
 
 * What it's planned to do:
     Determine when an SSN was issued...if i can find the historical data.  This can be used to further validate an SSN by comparing it to a Date of Birth.
-    Check the Death Master File if the SSN belongs to a dead person.  This will require you to purchase the dmf data from https://dmf.ntis.gov 
 
 == SYNOPSIS:
 
@@ -36,6 +36,14 @@ thanks goes to the management at Clarity Services Inc. for allowing this code to
 
 * Then check if it's valid
     ssn.valid?
+    ssn.death_master_file_hit?
+
+    ssn.valid? only checks to see if the number itself is valid.  Check the death_master_file_hit? method
+    as well to verify the ssn does not belong the the deceased.
+
+    The death_master_file_hit? method will only return true of false if you have purchased the dmf data and
+    loaded it into your database.  There is a generator and rake task to facilitate this, but you'll have
+    to purchase the data yourself at https://dmf.ntis.gov.
 
 * You can check the errors array to see why it's not valid.
     ssn.errors
@@ -54,7 +62,36 @@ thanks goes to the management at Clarity Services Inc. for allowing this code to
     config.gem 'kevintyll-ssn_validator', :lib => 'ssn_validator'
 * To load your table with the current SSN data, from the command line, run:
     rake ssn_validator:update_data
-* The SSN data is updated monthly, so you'll want to run this rake task monthly to keep your validations accurate.
+
+    * The SSN data is updated monthly, so you'll want to run this rake task monthly to keep your validations accurate.
+
+* If you've purchased the death master file data, create the death_master_files migration:
+    script/generate death_master_file_migration
+* To load the dmf files you receive from ntis:
+    rake ssn_validator:death_master_file:load_file PATH='path/to/file' AS_OF='2009-03-01'
+
+    * You'll need to pass in the full path to where the file is on disk.  You'll also need
+      to pass in the date this file's data are as of in the format yyyy-mm-dd.
+
+    * This task must be used to load the initial file you receive from ntis on CD.  It can optionally be used
+      to load the monthly update files you download from the website.  If you manually download the update files,
+      you do not need to add your user name and password to the environment.rb file.  For a more automated approach
+      to loading the update files, add your user name and password to the environment.rb file and use the 2nd rake task.
+
+* To load the monthly updates from the ntis website:
+    * Add your user_name and password to the environment.rb file
+
+        SsnValidator::Ntis.user_name = 'REPLACE WITH YOUR dmf.ntis.gov USER NAME'
+        SsnValidator::Ntis.password = 'REPLACE WITH YOUR dmf.ntis.gov PASSWORD'
+
+    * Run the rake task:
+
+        rake ssn_validator:death_master_file:update_data
+
+        * This rake task will determine the most recent file that has been loaded, and loads all subsequent files in order
+        from the dmf.ntis.gov website.
+
+        * The death master file data is updated monthly, so you'll want to run this rake task monthly to keep your validations accurate.
 
 == LICENSE:
 

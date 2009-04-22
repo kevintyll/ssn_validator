@@ -13,8 +13,8 @@ $hoe = Hoe.new('ssn_validator', SsnValidator::VERSION) do |p|
   p.extra_dev_deps = [
     ['newgem', ">= #{::Newgem::VERSION}"]
   ]
-  
-  p.clean_globs |= %w[**/.DS_Store tmp *.log]
+
+  p.clean_globs |= %w[**/.DS_Store tmp *.log nbproject pkg]
   path = (p.rubyforge_name == p.name) ? p.rubyforge_name : "\#{p.rubyforge_name}/\#{p.name}"
   p.remote_rdoc_dir = File.join(path.gsub(/^#{p.rubyforge_name}\/?/,''), 'rdoc')
   p.rsync_args = '-av --delete --ignore-errors'

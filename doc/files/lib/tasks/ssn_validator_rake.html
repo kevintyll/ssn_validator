@@ -56,7 +56,7 @@
     </tr>
     <tr class="top-aligned-row">
       <td><strong>Last Update:</strong></td>
-      <td>Tue Apr 14 18:05:16 -0400 2009</td>
+      <td>Wed Apr 22 15:45:42 -0400 2009</td>
     </tr>
     </table>
   </div>
@@ -75,7 +75,23 @@ namespace :ssn_validator do
 <pre>
   desc &quot;Loads the current file from http://www.socialsecurity.gov/employer/ssns/highgroup.txt if it hasn't already been loaded.&quot;
   task :update_data =&gt; :environment do
-    puts SsnHighGroupCode.load_current_high_group_codes_file
+    SsnHighGroupCode.load_current_high_group_codes_file
+  end
+
+  namespace :death_master_file do
+    desc &quot;Loads a death master file.  Specify the path of the file: PATH=path.  Specify the date of the data: AS_OF=YYYY-MM-DD.  Optimized for Mysql databases.&quot;
+    task :load_file =&gt; :environment do
+      if ENV[&quot;PATH&quot;] &amp;&amp; ENV[&quot;AS_OF&quot;]
+        DeathMasterFileLoader.new(ENV[&quot;PATH&quot;],ENV[&quot;AS_OF&quot;]).load_file
+      else
+        puts &quot;You must specify the PATH and AS_OF variables:  rake ssn_validator:death_master_file:load_file PATH='path/to/file' AS_OF='2009-03-01'&quot;
+      end
+    end
+
+    desc &quot;Determines the most recent file that has been loaded, and loads all subsequent files in order from the dmf.ntis.gov website.  Optimized for Mysql databases.&quot;
+    task :update_data =&gt; :environment do
+      DeathMasterFileLoader.load_update_files_from_web
+    end
   end
 </pre>
 <p>

@@ -3,8 +3,16 @@
 * 1 major enhancement:
   * Initial release
 
-== 0.1.2 2009-15-14
+== 0.1.2 2009-04-15
 
 * 2 minor enhancements:
   * Added rdoc files
   * Updated documentation
+
+== 1.0.0 2009-04-22
+
+* 1 major enhancement:
+  * Added the death master file to determine if the ssn belongs to the deceased.
+
+* 1 minor enhancement:
+  * Fixed bug where an error was thrown if the ssn area has not been assigned yet.

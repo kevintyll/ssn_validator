@@ -1,7 +1,7 @@
 module SsnValidator
   class Ssn
 
-    attr_reader :ssn,:area,:group,:serial_number
+    attr_reader :ssn,:area,:group,:serial_number,:as_of
     attr_reader :errors
 
 
@@ -42,6 +42,7 @@ module SsnValidator
         if @ssn_high_group_code.nil?
           @errors << "Area '#{@area}' has not been assigned."
         else
+          @as_of = @ssn_high_group_code.as_of
 
           define_group_ranks
           
@@ -58,6 +59,11 @@ module SsnValidator
     #ssn passed all validations.
     def valid?
       @errors.empty?
+    end
+
+    #Determines if the passed in ssn belongs to the deceased.
+    def death_master_file_hit?
+      DeathMasterFile.find_by_social_security_number(@ssn)
     end
 
 

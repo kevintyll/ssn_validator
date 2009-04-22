@@ -8,13 +8,14 @@ class TestSsnValidator < Test::Unit::TestCase
   NONDIGIT_SSNS = %w(078051a20 078F51120 78051#20 051,20 078051m20)
   INVALID_ZEROS_SSNS = %w(166-00-1234 073-96-0000)
   GROUPS_NOT_ASSIGNED_TO_AREA_SSNS = %w(752991234 755971234 762991254)
+  AREA_NOT_ASSIGNED_SSNS = %w(666991234)
 
   VALID_SSNS = %w(001021234 161-84-9876 223981111)
   VALID_INTEGER_SSNS = [115941234, 161849876, 223981111]
   
   def setup
     setup_high_group_codes_table
-    SsnHighGroupCode.load_current_high_group_codes_file
+    SsnHighGroupCodeLoader.load_current_high_group_codes_file
   end
   
   def test_ssn_validations
@@ -48,6 +49,12 @@ class TestSsnValidator < Test::Unit::TestCase
       assert validator.errors.include?('Invalid group or serial number.'), "Errors: #{validator.errors}"
     end
 
+    AREA_NOT_ASSIGNED_SSNS.each do |ssn|
+      validator = SsnValidator::Ssn.new(ssn)
+      assert !validator.valid?
+      assert validator.errors.include?("Area '#{validator.area}' has not been assigned."), "Errors: #{validator.errors}"
+    end
+
     GROUPS_NOT_ASSIGNED_TO_AREA_SSNS.each do |ssn|
       validator = SsnValidator::Ssn.new(ssn)
       assert !validator.valid?
@@ -60,6 +67,17 @@ class TestSsnValidator < Test::Unit::TestCase
     end
 
 
+  end
+
+  def test_death_master_file_hit
+    create_death_master_file_table
+    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/files/test_dmf_initial_load.txt','2009-01-01').load_file
+    
+    validator = SsnValidator::Ssn.new('772781978')#ssn from file
+    assert validator.death_master_file_hit?
+
+    validator = SsnValidator::Ssn.new('666781978')#ssn not in file
+    assert !validator.death_master_file_hit?
   end
 
 end
