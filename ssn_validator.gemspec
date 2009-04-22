@@ -38,12 +38,15 @@ spec = Gem::Specification.new do |s|
 
   ]
   s.test_files = [
-    "test/test_helper.rb",
-    "test/test_ssn_validator.rb",
-    "test/test_ssn_high_group_code_loader.rb",
-    "test/test_death_master_file_loader.rb"
+            "test/test_helper.rb",
+            "test/test_ssn_validator.rb",
+            "test/test_ssn_high_group_code_loader.rb",
+            "test/test_death_master_file_loader.rb",
+            "test/mocks/test/death_master_file_loader.rb",
+            "test/files/test_dmf_initial_load.txt",
+            "test/files/test_dmf_update_load.txt"
   ]
-  s.post_install_message = File.readlines("PostInstall.txt")
+  s.post_install_message = 'Read the PostInstall.txt file for instructions on how to get the necessary tables created and data loaded.'
   s.require_paths = ["."]
   s.has_rdoc = true
 end
