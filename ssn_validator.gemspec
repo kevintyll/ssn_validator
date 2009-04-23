@@ -1,6 +1,6 @@
 spec = Gem::Specification.new do |s|
   s.name = "ssn_validator"
-  s.version = "1.0.0"
+  s.version = "1.0.1"
   s.date = "2009-04-13"
   s.author = "Kevin Tyll"
   s.email = "kevintyll@gmail.com"
@@ -44,7 +44,9 @@ spec = Gem::Specification.new do |s|
             "test/test_death_master_file_loader.rb",
             "test/mocks/test/death_master_file_loader.rb",
             "test/files/test_dmf_initial_load.txt",
-            "test/files/test_dmf_update_load.txt"
+            "test/files/test_dmf_update_load.txt",
+            "test/files/test_dmf_funky_data_load.txt",
+            "test/files/valid_csv_from_funky_data_file.txt"
   ]
   s.post_install_message = 'Read the PostInstall.txt file for instructions on how to get the necessary tables created and data loaded.'
   s.require_paths = ["."]

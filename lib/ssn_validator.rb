@@ -12,5 +12,5 @@ require 'rake'
 import "#{File.dirname(__FILE__)}/tasks/ssn_validator.rake"
 
 module SsnValidator
-  VERSION = '1.0.0'
+  VERSION = '1.0.1'
 end

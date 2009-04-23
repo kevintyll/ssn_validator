@@ -78,8 +78,36 @@ class TestDeathMasterFileLoader < Test::Unit::TestCase
     assert DeathMasterFile.find_by_as_of((initial_run += 1.month).to_s(:db))
     assert DeathMasterFile.find_by_as_of((initial_run += 1.month).to_s(:db))
     assert DeathMasterFile.find_by_as_of((initial_run += 1.month).to_s(:db))
+  end
 
+  def test_should_load_file_with_funky_data
+    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/files/test_dmf_funky_data_load.txt','2009-04-01').load_file
+    assert DeathMasterFile.count == 6
+    DeathMasterFile.find(:all).each do |dmf|
+      # this is more of an issue with the bulk mysql load, but since, I'm using
+      #sqlight3 for it's in memory db, I can't test the mysql load.
+      assert_not_nil dmf.as_of
+    end
+  end
 
+  def test_should_create_csv_file_for_mysql_import
+    #since, I'm using sqlight3 for it's in memory db, I can't test the mysql load
+    #but I can test the csv file creation.
+    loader = DeathMasterFileLoader.new(File.dirname(__FILE__) + '/files/test_dmf_funky_data_load.txt','2009-11-30')
+    csv = loader.create_csv_file #this method was created in the mock only to call the private convert_file_to_csv method
+    correctly_formatted_csv = File.open(File.dirname(__FILE__) + '/files/valid_csv_from_funky_data_file.txt')
+    #csv is open and at the end of the file, so we need to reopen it so we can read the lines.
+    generated_file = File.open(csv.path).readlines
+    #compare the values of each csv line, with the correctly formated "control file"
+    correctly_formatted_csv.each_with_index do |line,i|
+      csv_line = generated_file[i]
+      correctly_formatted_record_array = line.split(',')
+      csv_record_array = csv_line.split(',')
+      comparable_value_indices = (0..11).to_a << 14 #skip indices 12 and 13, they are the created_at and updated_at fields, they will never match.
+      comparable_value_indices.each do |i|
+        assert_equal correctly_formatted_record_array[i], csv_record_array[i]
+      end
+    end
   end
 
 end

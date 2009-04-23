@@ -25,3 +25,5 @@ test/test_death_master_file_loader.rb
 test/mocks/test/death_master_file_loader.rb
 test/files/test_dmf_initial_load.txt
 test/files/test_dmf_update_load.txt
+test/files/test_dmf_funky_data_load.txt
+test/files/valid_csv_from_funky_data_file.txt

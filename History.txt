@@ -14,5 +14,11 @@
 * 1 major enhancement:
   * Added the death master file to determine if the ssn belongs to the deceased.
 
-* 1 minor enhancement:
+* 1 bug fix:
   * Fixed bug where an error was thrown if the ssn area has not been assigned yet.
+
+== 1.0.1 2009-04-23
+
+* 2 bug fixes:
+  * Fixed dmf mysql load error when single quote is in a data file record.
+  * Fixed ssn_validator:update_data rake task that broke on the last build.

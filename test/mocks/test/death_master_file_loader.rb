@@ -2,6 +2,11 @@ require 'ssn_validator/models/death_master_file_loader'
 
 class DeathMasterFileLoader
 
+  #Gives access to the private convert_file_to_csv method
+  def create_csv_file
+    convert_file_to_csv
+  end
+
   def get_file_from_web
     case @file_path_or_url
     when /MA\d\d\d\d\d\d/ #these are the valid urls I want to mock a response to.
