@@ -61,9 +61,14 @@ module SsnValidator
       @errors.empty?
     end
 
+    #returns the death master record if there is one.
+    def death_master_file_record
+      DeathMasterFile.find_by_social_security_number(@ssn)
+    end
+
     #Determines if the passed in ssn belongs to the deceased.
     def death_master_file_hit?
-      DeathMasterFile.find_by_social_security_number(@ssn)
+      !death_master_file_record.nil?
     end
 
 

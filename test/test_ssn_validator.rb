@@ -74,9 +74,11 @@ class TestSsnValidator < Test::Unit::TestCase
     DeathMasterFileLoader.new(File.dirname(__FILE__) + '/files/test_dmf_initial_load.txt','2009-01-01').load_file
     
     validator = SsnValidator::Ssn.new('772781978')#ssn from file
+    assert DeathMasterFile, validator.death_master_file_record.class
     assert validator.death_master_file_hit?
 
     validator = SsnValidator::Ssn.new('666781978')#ssn not in file
+    assert_nil validator.death_master_file_record
     assert !validator.death_master_file_hit?
   end
 

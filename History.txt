@@ -27,3 +27,9 @@
 
 * 1 minor enhancement:
   * Using jeweler gem to create gemspec and rdoc files
+
+== 1.0.3 2009-04-24
+
+* 2 minor enhancement:
+  * Added method #death_master_file_record to SsnValidator::Ssn to return the actual dmf record if the SSN exists
+  * Changed the method #death_master_file_hit? to simply return true or false.
