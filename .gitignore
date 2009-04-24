@@ -1,4 +1,4 @@
-**/.DS_Store
-**/.svn
+*.DS_Store
+*.svn
 pkg
 nbproject
