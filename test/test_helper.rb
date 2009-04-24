@@ -1,7 +1,10 @@
-require 'stringio'
+require 'rubygems'
 require 'test/unit'
 require 'mocks/test/death_master_file_loader'
-require File.dirname(__FILE__) + '/../lib/ssn_validator'
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+require 'ssn_validator'
 
 ActiveRecord::Base.establish_connection :adapter => 'sqlite3', :database => ':memory:'
 

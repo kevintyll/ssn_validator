@@ -196,19 +196,19 @@ data is accurate.
 <span class="ruby-comment cmt"># File lib/ssn_validator/models/death_master_file_loader.rb, line 46</span>
   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_file_from_web</span>
     <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@file_path_or_url</span>)
-    
+
     <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">request_uri</span>)
     <span class="ruby-identifier">request</span>.<span class="ruby-identifier">basic_auth</span>(<span class="ruby-constant">SsnValidator</span><span class="ruby-operator">::</span><span class="ruby-constant">Ntis</span>.<span class="ruby-identifier">user_name</span>,<span class="ruby-constant">SsnValidator</span><span class="ruby-operator">::</span><span class="ruby-constant">Ntis</span>.<span class="ruby-identifier">password</span>)
 
     <span class="ruby-identifier">http</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
     <span class="ruby-identifier">http</span>.<span class="ruby-identifier">use_ssl</span> = (<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span> <span class="ruby-operator">==</span> <span class="ruby-value">443</span>)
     <span class="ruby-identifier">http</span>.<span class="ruby-identifier">verify_mode</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span><span class="ruby-operator">::</span><span class="ruby-constant">VERIFY_NONE</span>
-    
+
     <span class="ruby-identifier">response</span> = <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">request</span>)
-    
+
     <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;Invalid URL: #{@file_path_or_url}&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTPNotFound</span>)
     <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;Authorization Required: Invalid username or password.  Set the variables SsnValidator::Ntis.user_name and SsnValidator::Ntis.password in your environment.rb file.&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTPUnauthorized</span>)
-    
+
     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">response</span>.<span class="ruby-identifier">body</span>
   <span class="ruby-keyword kw">end</span>
 </pre>
@@ -269,7 +269,7 @@ data is accurate.
     <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;as_of not specified&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@file_as_of</span>
     <span class="ruby-identifier">max_as_of</span> = <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">maximum</span>(<span class="ruby-identifier">:as_of</span>)
     <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;A more recent file has already been processed.  DB as_of date #{max_as_of}&quot;</span>) <span class="ruby-keyword kw">if</span>  <span class="ruby-identifier">max_as_of</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">max_as_of</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@file_as_of</span>.<span class="ruby-identifier">to_date</span>)
-   
+
     <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-ivar">@file_path_or_url</span>)
       <span class="ruby-ivar">@download_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-ivar">@file_path_or_url</span>)
     <span class="ruby-keyword kw">elsif</span> <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@file_path_or_url</span>).<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>)

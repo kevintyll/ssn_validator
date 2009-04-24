@@ -22,3 +22,8 @@
 * 2 bug fixes:
   * Fixed dmf mysql load error when single quote is in a data file record.
   * Fixed ssn_validator:update_data rake task that broke on the last build.
+
+== 1.0.2 2009-04-24
+
+* 1 minor enhancement:
+  * Using jeweler gem to create gemspec and rdoc files
