@@ -197,7 +197,7 @@ class DeathMasterFileLoader
     puts "Importing into Mysql..."
 
     #delete all the 'D' records
-    DeathMasterFile.destroy_all(:social_security_number => @delete_ssns)
+    DeathMasterFile.delete_all(:social_security_number => @delete_ssns)
 
     #This will insert new records, and replace records with existing ssns.
     #This only works because there is a unique index on social_security_number.
