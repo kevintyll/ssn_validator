@@ -12,6 +12,9 @@ begin
     gemspec.description = "Validates whether an SSN has likely been issued or not."
     gemspec.post_install_message = File.readlines("PostInstall.txt").join("")
   end
+
+  Jeweler::GemcutterTasks.new
+  
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end

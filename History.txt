@@ -1,13 +1,25 @@
-== 0.1.0 2009-04-14
+== 1.0.4 2010-02-05
 
-* 1 major enhancement:
-  * Initial release
+* 1 bug fixes:
+  * The ssa website changed it's process for the most recent month.  Modified the rake task
+    to determine the most recent month loaded and bring it up to date.
 
-== 0.1.2 2009-04-15
+== 1.0.3 2009-04-24
 
-* 2 minor enhancements:
-  * Added rdoc files
-  * Updated documentation
+* 2 minor enhancement:
+  * Added method #death_master_file_record to SsnValidator::Ssn to return the actual dmf record if the SSN exists
+  * Changed the method #death_master_file_hit? to simply return true or false.
+
+== 1.0.2 2009-04-24
+
+* 1 minor enhancement:
+  * Using jeweler gem to create gemspec and rdoc files
+
+== 1.0.1 2009-04-23
+
+* 2 bug fixes:
+  * Fixed dmf mysql load error when single quote is in a data file record.
+  * Fixed ssn_validator:update_data rake task that broke on the last build.
 
 == 1.0.0 2009-04-22
 
@@ -17,19 +29,13 @@
 * 1 bug fix:
   * Fixed bug where an error was thrown if the ssn area has not been assigned yet.
 
-== 1.0.1 2009-04-23
+== 0.1.2 2009-04-15
 
-* 2 bug fixes:
-  * Fixed dmf mysql load error when single quote is in a data file record.
-  * Fixed ssn_validator:update_data rake task that broke on the last build.
+* 2 minor enhancements:
+  * Added rdoc files
+  * Updated documentation
 
-== 1.0.2 2009-04-24
+== 0.1.0 2009-04-14
 
-* 1 minor enhancement:
-  * Using jeweler gem to create gemspec and rdoc files
-
-== 1.0.3 2009-04-24
-
-* 2 minor enhancement:
-  * Added method #death_master_file_record to SsnValidator::Ssn to return the actual dmf record if the SSN exists
-  * Changed the method #death_master_file_hit? to simply return true or false.
+* 1 major enhancement:
+  * Initial release
