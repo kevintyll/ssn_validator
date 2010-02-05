@@ -86,7 +86,8 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000001">load_current_high_group_codes_file</a>&nbsp;&nbsp;
+      <a href="#M000001">load_all_high_group_codes_files</a>&nbsp;&nbsp;
+      <a href="#M000002">load_current_high_group_codes_file</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -113,6 +114,56 @@
 
         <div class="method-heading">
           <a href="#M000001" class="method-signature">
+          <span class="method-name">load_all_high_group_codes_files</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000001-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000001-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/ssn_validator/models/ssn_high_group_code_loader.rb, line 4</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">load_all_high_group_codes_files</span>
+    <span class="ruby-identifier">months</span> = [<span class="ruby-value str">'Jan'</span>,<span class="ruby-value str">'Feb'</span>,<span class="ruby-value str">'Mar'</span>,<span class="ruby-value str">'Apr'</span>,<span class="ruby-value str">'May'</span>,<span class="ruby-value str">'June'</span>,<span class="ruby-value str">'July'</span>,<span class="ruby-value str">'Aug'</span>,<span class="ruby-value str">'Sept'</span>,<span class="ruby-value str">'Oct'</span>,<span class="ruby-value str">'Nov'</span>,<span class="ruby-value str">'Dec'</span>]
+    <span class="ruby-identifier">run_file_date</span> = <span class="ruby-constant">SsnHighGroupCode</span>.<span class="ruby-identifier">maximum</span>(<span class="ruby-identifier">:as_of</span>)
+    <span class="ruby-identifier">run_file_date</span> = <span class="ruby-identifier">run_file_date</span> <span class="ruby-value">? </span><span class="ruby-identifier">run_file_date</span>.<span class="ruby-identifier">next_month</span>.<span class="ruby-identifier">beginning_of_month</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">2003</span>,<span class="ruby-value">11</span>,<span class="ruby-value">01</span>)
+    <span class="ruby-identifier">last_file_date</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">beginning_of_month</span>
+    <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">run_file_date</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">last_file_date</span>
+      <span class="ruby-identifier">file_processed</span> = <span class="ruby-keyword kw">false</span>
+      <span class="ruby-identifier">run_file_month</span> = <span class="ruby-identifier">months</span>[<span class="ruby-identifier">run_file_date</span>.<span class="ruby-identifier">month</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>]
+      <span class="ruby-identifier">run_file_year</span> =  <span class="ruby-identifier">run_file_date</span>.<span class="ruby-identifier">year</span>
+      [<span class="ruby-value str">''</span>,<span class="ruby-value str">'corrected'</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mod</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword kw">break</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">file_processed</span>
+        [<span class="ruby-value str">'ssns'</span>,<span class="ruby-value str">'ssnvs'</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">url_mod</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword kw">break</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">file_processed</span>
+          (<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">day</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">day</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">string_day</span> = <span class="ruby-identifier">day</span>.<span class="ruby-identifier">to_s</span>
+            <span class="ruby-identifier">string_day</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-value">0</span>,<span class="ruby-value str">'0'</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">day</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">10</span>
+            <span class="ruby-identifier">string_year</span> = <span class="ruby-identifier">run_file_year</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">last</span>(<span class="ruby-value">2</span>)
+            <span class="ruby-identifier">file_name</span> = <span class="ruby-node">&quot;HG#{run_file_month}#{string_day}#{string_year}#{mod}.txt&quot;</span>
+            <span class="ruby-identifier">text</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">get</span>(<span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-node">&quot;http://www.socialsecurity.gov/employer/#{url_mod}/#{file_name}&quot;</span>))
+            <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'File Not Found'</span>
+              <span class="ruby-identifier">create_records</span>(<span class="ruby-identifier">parse_text</span>(<span class="ruby-identifier">text</span>),<span class="ruby-identifier">extract_as_of_date</span>(<span class="ruby-identifier">text</span>))
+              <span class="ruby-identifier">run_file_date</span> = <span class="ruby-identifier">run_file_date</span>.<span class="ruby-identifier">next_month</span>
+              <span class="ruby-identifier">file_processed</span> = <span class="ruby-keyword kw">true</span>
+              <span class="ruby-keyword kw">break</span>
+            <span class="ruby-keyword kw">end</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000002" class="method-detail">
+        <a name="M000002"></a>
+
+        <div class="method-heading">
+          <a href="#M000002" class="method-signature">
           <span class="method-name">load_current_high_group_codes_file</span><span class="method-args">()</span>
           </a>
         </div>
@@ -123,10 +174,10 @@ Loads the most recent file from <a
 href="http://www.socialsecurity.gov/employer/ssns/highgroup.txt">www.socialsecurity.gov/employer/ssns/highgroup.txt</a>
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000001-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000001-source">
+            onclick="toggleCode('M000002-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000002-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/ssn_validator/models/ssn_high_group_code_loader.rb, line 29</span>
+<span class="ruby-comment cmt"># File lib/ssn_validator/models/ssn_high_group_code_loader.rb, line 36</span>
   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">load_current_high_group_codes_file</span>
     <span class="ruby-identifier">text</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">get</span>(<span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-value str">'http://www.socialsecurity.gov/employer/ssns/highgroup.txt'</span>))
     <span class="ruby-identifier">create_records</span>(<span class="ruby-identifier">parse_text</span>(<span class="ruby-identifier">text</span>),<span class="ruby-identifier">extract_as_of_date</span>(<span class="ruby-identifier">text</span>))

@@ -86,9 +86,10 @@
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000009">death_master_file_hit?</a>&nbsp;&nbsp;
-      <a href="#M000007">new</a>&nbsp;&nbsp;
-      <a href="#M000008">valid?</a>&nbsp;&nbsp;
+      <a href="#M000011">death_master_file_hit?</a>&nbsp;&nbsp;
+      <a href="#M000010">death_master_file_record</a>&nbsp;&nbsp;
+      <a href="#M000008">new</a>&nbsp;&nbsp;
+      <a href="#M000009">valid?</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -148,11 +149,11 @@
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000007" class="method-detail">
-        <a name="M000007"></a>
+      <div id="method-M000008" class="method-detail">
+        <a name="M000008"></a>
 
         <div class="method-heading">
-          <a href="#M000007" class="method-signature">
+          <a href="#M000008" class="method-signature">
           <span class="method-name">new</span><span class="method-args">(ssn)</span>
           </a>
         </div>
@@ -163,8 +164,8 @@ Instantiate the object passing in a social security number. The ssn can be
 a string or integer, with or without the &#8217;-&#8217;s.
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000007-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000007-source">
+            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000008-source">
 <pre>
 <span class="ruby-comment cmt"># File lib/ssn_validator/models/ssn_validator.rb, line 10</span>
     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">ssn</span>)
@@ -221,11 +222,11 @@ a string or integer, with or without the &#8217;-&#8217;s.
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000009" class="method-detail">
-        <a name="M000009"></a>
+      <div id="method-M000011" class="method-detail">
+        <a name="M000011"></a>
 
         <div class="method-heading">
-          <a href="#M000009" class="method-signature">
+          <a href="#M000011" class="method-signature">
           <span class="method-name">death_master_file_hit?</span><span class="method-args">()</span>
           </a>
         </div>
@@ -235,11 +236,37 @@ a string or integer, with or without the &#8217;-&#8217;s.
 Determines if the passed in ssn belongs to the deceased.
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000009-source">
+            onclick="toggleCode('M000011-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000011-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/ssn_validator/models/ssn_validator.rb, line 70</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">death_master_file_hit?</span>
+      <span class="ruby-operator">!</span><span class="ruby-identifier">death_master_file_record</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000010" class="method-detail">
+        <a name="M000010"></a>
+
+        <div class="method-heading">
+          <a href="#M000010" class="method-signature">
+          <span class="method-name">death_master_file_record</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+returns the death master record if there is one.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000010-source">
 <pre>
 <span class="ruby-comment cmt"># File lib/ssn_validator/models/ssn_validator.rb, line 65</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">death_master_file_hit?</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">death_master_file_record</span>
       <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">find_by_social_security_number</span>(<span class="ruby-ivar">@ssn</span>)
     <span class="ruby-keyword kw">end</span>
 </pre>
@@ -247,11 +274,11 @@ Determines if the passed in ssn belongs to the deceased.
         </div>
       </div>
 
-      <div id="method-M000008" class="method-detail">
-        <a name="M000008"></a>
+      <div id="method-M000009" class="method-detail">
+        <a name="M000009"></a>
 
         <div class="method-heading">
-          <a href="#M000008" class="method-signature">
+          <a href="#M000009" class="method-signature">
           <span class="method-name">valid?</span><span class="method-args">()</span>
           </a>
         </div>
@@ -261,8 +288,8 @@ Determines if the passed in ssn belongs to the deceased.
 Determines whether or not the passed in ssn passed all validations.
 </p>
           <p><a class="source-toggle" href="#"
-            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
-          <div class="method-source-code" id="M000008-source">
+            onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000009-source">
 <pre>
 <span class="ruby-comment cmt"># File lib/ssn_validator/models/ssn_validator.rb, line 60</span>
     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">valid?</span>
