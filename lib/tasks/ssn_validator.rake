@@ -2,7 +2,7 @@
 namespace :ssn_validator do
   desc "Loads the current file from http://www.socialsecurity.gov/employer/ssns/highgroup.txt if it hasn't already been loaded."
   task :update_data => :environment do
-    SsnHighGroupCodeLoader.load_current_high_group_codes_file
+    SsnHighGroupCodeLoader.load_all_high_group_codes_files
   end
 
   namespace :death_master_file do

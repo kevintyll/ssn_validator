@@ -1,29 +1,36 @@
 
 require 'net/http'
 class SsnHighGroupCodeLoader
-  #  def self.load_historical_high_group_codes_file
-#    ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'].each do |month|
-#      (1..10).each do |day|
-#        string_day = day.to_s
-#        string_day.insert(0,'0') if day < 10
-#        current_year = Date.today.year
-#        #(1932..current_year).each do |year|
-#        [2003].each do |year|
-#          string_year = year.to_s.last(2)
-#          ['','corrected'].each do |mod|
-#            ['ssns','ssnvs'].each do |url_mod|
-#              file_name = "HG#{month}#{string_day}#{string_year}#{mod}.txt"
-#              text = Net::HTTP.get(URI.parse("http://www.socialsecurity.gov/employer/#{url_mod}/#{file_name}"))
-#              puts file_name.inspect
-#              puts '@@@@@@@@@ found file_name = ' + file_name.inspect unless text.include? 'File Not Found'
-#            end
-#          end
-#
-#        end
-#      end
-#
-#    end
-#  end
+  def self.load_all_high_group_codes_files
+    months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec']
+    run_file_date = SsnHighGroupCode.maximum(:as_of)
+    run_file_date = run_file_date ? run_file_date.next_month.beginning_of_month : Date.new(2003,11,01)
+    last_file_date = Date.today.beginning_of_month
+    while run_file_date <= last_file_date
+      file_processed = false
+      run_file_month = months[run_file_date.month - 1]
+      run_file_year =  run_file_date.year
+      ['','corrected'].each do |mod|
+        break if file_processed
+        ['ssns','ssnvs'].each do |url_mod|
+          break if file_processed
+          (1..Date.today.day).each do |day|
+            string_day = day.to_s
+            string_day.insert(0,'0') if day < 10
+            string_year = run_file_year.to_s.last(2)
+            file_name = "HG#{run_file_month}#{string_day}#{string_year}#{mod}.txt"
+            text = Net::HTTP.get(URI.parse("http://www.socialsecurity.gov/employer/#{url_mod}/#{file_name}"))
+            unless text.include? 'File Not Found'
+              create_records(parse_text(text),extract_as_of_date(text))
+              run_file_date = run_file_date.next_month
+              file_processed = true
+              break
+            end
+          end
+        end
+      end
+    end
+  end
 
   #Loads the most recent file from http://www.socialsecurity.gov/employer/ssns/highgroup.txt
   def self.load_current_high_group_codes_file
