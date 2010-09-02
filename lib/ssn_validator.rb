@@ -9,4 +9,4 @@ require 'ssn_validator/models/death_master_file_loader'
 require 'rake'
 
 # Load rake file
-import "#{File.dirname(__FILE__)}/tasks/ssn_validator.rake"
+load "#{File.dirname(__FILE__)}/tasks/ssn_validator.rake"
