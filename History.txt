@@ -1,3 +1,11 @@
+== 1.0.5 2010-09-03
+
+* 1 minor enhancement:
+  * Changed the method to load the rake tasks from import to load to be jruby friendly.
+* 1 bug fix:
+  * Fixed an infinite loop that can happen if the current month's file is not yet posted on the ssa.gov web site
+    on the update_data rake task
+
 == 1.0.4 2010-02-05
 
 * 1 bug fixes:
