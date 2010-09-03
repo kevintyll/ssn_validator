@@ -4,7 +4,7 @@ class SsnHighGroupCodeLoader
   def self.load_all_high_group_codes_files
     months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec']
     run_file_date = SsnHighGroupCode.maximum(:as_of)
-    run_file_date = run_file_date ? run_file_date.next_month.beginning_of_month : Date.new(2003,11,01)
+    run_file_date = run_file_date ? run_file_date.next_month.beginning_of_month.to_date : Date.new(2003,11,01)
     last_file_date = Date.today.beginning_of_month
     while run_file_date <= last_file_date
       file_processed = false
@@ -22,13 +22,14 @@ class SsnHighGroupCodeLoader
             text = Net::HTTP.get(URI.parse("http://www.socialsecurity.gov/employer/#{url_mod}/#{file_name}"))
             unless text.include? 'File Not Found'
               create_records(parse_text(text),extract_as_of_date(text))
-              run_file_date = run_file_date.next_month
+              #run_file_date = run_file_date.next_month
               file_processed = true
               break
             end
           end
         end
       end
+      run_file_date = run_file_date.next_month
     end
   end
 
