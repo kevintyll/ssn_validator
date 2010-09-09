@@ -1,3 +1,9 @@
+== 1.0.7 2010-09-09
+
+*  2 enhancements:
+   * Modified to death master file load to stream the data from the website to be more jruby friendly.
+   * Made a small change to the ssn high group loader to handle ssa.gov url naming inconsistencies.
+
 == 1.0.6 2010-09-03
 * correct gemspec
 
