@@ -1,3 +1,8 @@
+== 1.0.8 2010-12-21
+
+*  1 enhancements:
+   * changed require 'activerecord' to 'active_record'.
+
 == 1.0.7 2010-09-09
 
 *  2 enhancements:
