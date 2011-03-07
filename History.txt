@@ -1,3 +1,8 @@
+== 1.0.9 2011-03-07
+
+*  1 enhancements:
+   * added yields to the loader classes to pass statuses to the calling class
+
 == 1.0.8 2010-12-21
 
 *  1 enhancements:

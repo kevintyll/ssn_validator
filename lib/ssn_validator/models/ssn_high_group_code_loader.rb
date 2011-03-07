@@ -23,7 +23,9 @@ class SsnHighGroupCodeLoader
               file_name = "HG#{run_file_month}#{string_day}#{string_year}#{mod}.txt"
               text = Net::HTTP.get(URI.parse("http://www.socialsecurity.gov/employer/#{url_mod}/#{file_name}"))
               unless text.include? 'File Not Found'
-                create_records(parse_text(text),extract_as_of_date(text))
+                create_records(parse_text(text),extract_as_of_date(text)) do |status|
+                  yield status if block_given?
+                end
                 file_processed = true
                 break
               end
@@ -51,11 +53,13 @@ class SsnHighGroupCodeLoader
   def self.create_records(area_groups,file_as_of)
     if already_loaded?(file_as_of)
       puts "File as of #{file_as_of} has already been loaded."
+      yield "File as of #{file_as_of} has already been loaded." if block_given?
     else
       area_groups.each do |area_group|
         SsnHighGroupCode.create(area_group.merge!(:as_of => file_as_of.to_s(:db)))
       end
       puts "File as of #{file_as_of} loaded."
+      yield "File as of #{file_as_of} loaded." if block_given?
     end
   end
 

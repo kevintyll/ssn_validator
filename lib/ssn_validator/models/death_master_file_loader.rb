@@ -8,10 +8,10 @@ class DeathMasterFileLoader
 
   # path_or_url is the full path to the file to load on disk, or the url of an update file.
   # as_of is a string in the formatt YYYY-MM-DD for which the file data is accurate.
-  def initialize(path_or_url,file_as_of)
+  def initialize(path_or_url, file_as_of)
     @file_path_or_url = path_or_url
-    @file_as_of = file_as_of
-    valid?
+    @file_as_of       = file_as_of
+    valid?{|status| yield status if block_given?}
   end
 
   def valid?
@@ -23,7 +23,7 @@ class DeathMasterFileLoader
     if File.exists?(@file_path_or_url)
       @download_file = File.open(@file_path_or_url)
     elsif URI.parse(@file_path_or_url).kind_of?(URI::HTTP)
-      @download_file = File.open(get_file_from_web)
+      @download_file = File.open(get_file_from_web{|status| yield status if block_given?})
     else
       raise(Errno::ENOENT, @file_path_or_url)
     end
@@ -33,27 +33,28 @@ class DeathMasterFileLoader
 
     if DeathMasterFile.connection.kind_of?(ActiveRecord::ConnectionAdapters::MysqlAdapter) || DeathMasterFile.connection.kind_of?(ActiveRecord::ConnectionAdapters::JdbcAdapter)
       puts "Converting file to csv format for Mysql import.  This could take several minutes."
+      yield "Converting file to csv format for Mysql import.  This could take several minutes." if block_given?
 
-      csv_file = convert_file_to_csv
+      csv_file = convert_file_to_csv{|status| yield status if block_given?}
 
-      bulk_mysql_update(csv_file)
+      bulk_mysql_update(csv_file){|status| yield status if block_given?}
     else
-      active_record_file_load
+      active_record_file_load{|status| yield status if block_given?}
     end
 
   end
 
   def get_file_from_web
-    uri = URI.parse(@file_path_or_url)
+    uri     = URI.parse(@file_path_or_url)
 
     request = Net::HTTP::Get.new(uri.request_uri)
-    request.basic_auth(SsnValidator::Ntis.user_name,SsnValidator::Ntis.password)
+    request.basic_auth(SsnValidator::Ntis.user_name, SsnValidator::Ntis.password)
 
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = (uri.port == 443)
+    http             = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl     = (uri.port == 443)
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
-    csv_file = Tempfile.new(@file_path_or_url.split('/').last)    # create temp file for the raw file.
+    csv_file         = Tempfile.new(@file_path_or_url.split('/').last) # create temp file for the raw file.
     http.request(request) do |res|
       raise(ArgumentError, "Invalid URL: #{@file_path_or_url}") if res.kind_of?(Net::HTTPNotFound)
       raise(ArgumentError, "Authorization Required: Invalid username or password.  Set the variables SsnValidator::Ntis.user_name and SsnValidator::Ntis.password in your environment.rb file.") if res.kind_of?(Net::HTTPUnauthorized)
@@ -62,6 +63,7 @@ class DeathMasterFileLoader
         size += chunk.size
         csv_file.write chunk
         puts "%d%% done (%d of %d)" % [(size * 100) / total, size, total]
+        yield("%d%% done (%d of %d)" % [(size * 100) / total, size, total]) if block_given?
       end
 
     end
@@ -73,13 +75,17 @@ class DeathMasterFileLoader
   #It starts with the last file loaded, and loads each
   #missing file in sequence up to the current file.
   def self.load_update_files_from_web
-    max_as_of = DeathMasterFile.maximum(:as_of)
-    run_file_date = max_as_of.beginning_of_month.next_month
+    max_as_of      = DeathMasterFile.maximum(:as_of)
+    run_file_date  = max_as_of.beginning_of_month.next_month
     last_file_date = Date.today.beginning_of_month
     while run_file_date <= last_file_date
       url = "https://dmf.ntis.gov/dmldata/monthly/MA#{run_file_date.strftime("%y%m%d")}"
       puts "Loading file #{url}"
-      DeathMasterFileLoader.new(url,run_file_date.strftime("%Y-%m-%d")).load_file
+      yield "Loading file #{url}" if block_given?
+      dmf = DeathMasterFileLoader.new(url, run_file_date.strftime("%Y-%m-%d")){|status| yield status if block_given?}
+      dmf.load_file do |status|
+        yield status if block_given?
+      end
       run_file_date += 1.month
     end
   end
@@ -90,16 +96,16 @@ class DeathMasterFileLoader
   # Used to convert a packed fixed-length file into csv for mysql import.
   def convert_file_to_csv
 
-    csv_file = Tempfile.new("dmf")    # create temp file for converted csv formmat.
+    csv_file     = Tempfile.new("dmf") # create temp file for converted csv formmat.
 
 
-    start = Time.now
-    timenow = start.to_s(:db)
+    start        = Time.now
+    timenow      = start.to_s(:db)
 
     @delete_ssns = []
-    puts "********** @download_file = " + @download_file.inspect
-    @download_file.each_with_index do |line,i|
-      action = record_action(line)
+
+    @download_file.each_with_index do |line, i|
+      action          = record_action(line)
       attributes_hash = text_to_hash(line)
       if  action == 'D'
         #keep track of all the records to delete.  We'll delete at the end all at once.
@@ -107,40 +113,44 @@ class DeathMasterFileLoader
       else
         # empty field for id to be generated by mysql.
         newline = "``," +
-          # social_security_number
+            # social_security_number
         "`#{attributes_hash[:social_security_number]}`," +
-          # last_name
+            # last_name
         "`#{attributes_hash[:last_name]}`," +
-          # name_suffix
+            # name_suffix
         "`#{attributes_hash[:name_suffix]}`," +
-          # first_name
+            # first_name
         "`#{attributes_hash[:first_name]}`," +
-          # middle_name
+            # middle_name
         "`#{attributes_hash[:middle_name]}`," +
-          # verify_proof_code
+            # verify_proof_code
         "`#{attributes_hash[:verify_proof_code]}`," +
-          # date_of_death - need YYYY-MM-DD.
+            # date_of_death - need YYYY-MM-DD.
         "`#{attributes_hash[:date_of_death]}`," +
-          # date_of_birth - need YYYY-MM-DD.
+            # date_of_birth - need YYYY-MM-DD.
         "`#{attributes_hash[:date_of_birth]}`," +
-          # state_of_residence - must be code between 01 and 65 or else nil.
+            # state_of_residence - must be code between 01 and 65 or else nil.
         "`#{attributes_hash[:state_of_residence]}`," +
-          # last_known_zip_residence
+            # last_known_zip_residence
         "`#{attributes_hash[:last_known_zip_residence]}`," +
-          # last_known_zip_payment
+            # last_known_zip_payment
         "`#{attributes_hash[:last_known_zip_payment]}`," +
-          # created_at
+            # created_at
         "`#{timenow}`," +
-          # updated_at
+            # updated_at
         "`#{timenow}`," +
-          # as_of
+            # as_of
         "`#{attributes_hash[:as_of]}`" +"\n"
 
         csv_file.syswrite newline
-        puts "#{i} records processed." if (i % 25000 == 0) && (i > 0)
+        if (i % 25000 == 0) && (i > 0)
+          puts "#{i} records processed."
+          yield "#{i} records processed." if block_given?
+        end
       end
     end
     puts "File conversion ran for #{(Time.now - start) / 60} minutes."
+    yield "File conversion ran for #{(Time.now - start) / 60} minutes." if block_given?
     return csv_file
   end
 
@@ -149,9 +159,10 @@ class DeathMasterFileLoader
   #The downside is it's really slow.
   def active_record_file_load
     puts 'Importing file into database. This could take many minutes.'
+    yield 'Importing file into database. This could take many minutes.' if block_given?
 
-    @download_file.each_with_index do |line,i|
-      action = record_action(line)
+    @download_file.each_with_index do |line, i|
+      action          = record_action(line)
       attributes_hash = text_to_hash(line)
       if  action == 'D'
         DeathMasterFile.destroy_all(['social_security_number = ?', attributes_hash[:social_security_number]])
@@ -175,26 +186,28 @@ class DeathMasterFileLoader
         #        }
 
         case action
-        when '',nil,' '
-          #the initial file leaves this field blank
-          DeathMasterFile.create(attributes_hash)
-        else
-          dmf = DeathMasterFile.find_by_social_security_number(attributes_hash[:social_security_number])
-          if dmf
-            #a record already exists, update this record
-            dmf.update_attributes(attributes_hash)
-          else
-            #create a new record
+          when '', nil, ' '
+            #the initial file leaves this field blank
             DeathMasterFile.create(attributes_hash)
-          end
+          else
+            dmf = DeathMasterFile.find_by_social_security_number(attributes_hash[:social_security_number])
+            if dmf
+              #a record already exists, update this record
+              dmf.update_attributes(attributes_hash)
+            else
+              #create a new record
+              DeathMasterFile.create(attributes_hash)
+            end
         end
       end
-
-      puts "#{i} records processed." if (i % 2500 == 0) && (i > 0)
-
+      if (i % 2500 == 0) && (i > 0)
+        puts "#{i} records processed."
+        yield "#{i} records processed." if block_given?
+      end
     end
 
     puts "Import complete."
+    yield "Import complete." if block_given?
   end
 
   # For mysql, use:
@@ -203,6 +216,7 @@ class DeathMasterFileLoader
   # see http://dev.mysql.com/doc/refman/5.1/en/load-data.html
   def bulk_mysql_update(csv_file)
     puts "Importing into Mysql..."
+    yield "Importing into Mysql..." if block_given?
 
     #delete all the 'D' records
     DeathMasterFile.delete_all(:social_security_number => @delete_ssns)
@@ -215,29 +229,28 @@ class DeathMasterFileLoader
 
     DeathMasterFile.connection.execute(mysql_command)
     puts "Mysql import complete."
+    yield "Mysql import complete." if block_given?
 
   end
 
   def record_action(line)
-    line[0,1].to_s.strip
+    line[0, 1].to_s.strip
   end
 
   def text_to_hash(line)
 
-    {:as_of => @file_as_of.to_date.to_s(:db),
-      :social_security_number => line[1,9].to_s.strip,
-      :last_name => line[10,20].to_s.strip,
-      :name_suffix => line[30,4].to_s.strip,
-      :first_name => line[34,15].to_s.strip,
-      :middle_name => line[49,15].to_s.strip,
-      :verify_proof_code => line[64,1].to_s.strip,
-      :date_of_death => (Date.strptime(line[65,8].to_s.strip,'%m%d%Y') rescue nil),
-      :date_of_birth => (Date.strptime(line[73,8].to_s.strip,'%m%d%Y') rescue nil),
-      # - must be code between 01 and 65 or else nil.
-      :state_of_residence => (line[81,2].to_s.strip.between?('01', '65') ? line[81,2].to_s.strip : nil),
-      :last_known_zip_residence => line[83,5].to_s.strip,
-      :last_known_zip_payment => line[88,5].to_s.strip}
-  rescue Exception => e
-    puts '@@@@@@@@@ Error = ' + e.message + ':   ' + line.inspect
+    {:as_of                    => @file_as_of.to_date.to_s(:db),
+     :social_security_number   => line[1, 9].to_s.strip,
+     :last_name                => line[10, 20].to_s.strip,
+     :name_suffix              => line[30, 4].to_s.strip,
+     :first_name               => line[34, 15].to_s.strip,
+     :middle_name              => line[49, 15].to_s.strip,
+     :verify_proof_code        => line[64, 1].to_s.strip,
+     :date_of_death            => (Date.strptime(line[65, 8].to_s.strip, '%m%d%Y') rescue nil),
+     :date_of_birth            => (Date.strptime(line[73, 8].to_s.strip, '%m%d%Y') rescue nil),
+     # - must be code between 01 and 65 or else nil.
+     :state_of_residence       => (line[81, 2].to_s.strip.between?('01', '65') ? line[81, 2].to_s.strip : nil),
+     :last_known_zip_residence => line[83, 5].to_s.strip,
+     :last_known_zip_payment   => line[88, 5].to_s.strip}
   end
 end

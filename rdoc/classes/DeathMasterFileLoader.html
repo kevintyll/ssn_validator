@@ -117,7 +117,7 @@
 
         <div class="method-heading">
           <a href="#M000005" class="method-signature">
-          <span class="method-name">load_update_files_from_web</span><span class="method-args">()</span>
+          <span class="method-name">load_update_files_from_web</span><span class="method-args">() {|&quot;Loading file| ...}</span>
           </a>
         </div>
       
@@ -130,15 +130,19 @@ loaded, and loads each missing file in sequence up to the current file.
             onclick="toggleCode('M000005-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000005-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/ssn_validator/models/death_master_file_loader.rb, line 75</span>
+<span class="ruby-comment cmt"># File lib/ssn_validator/models/death_master_file_loader.rb, line 77</span>
   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">load_update_files_from_web</span>
-    <span class="ruby-identifier">max_as_of</span> = <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">maximum</span>(<span class="ruby-identifier">:as_of</span>)
-    <span class="ruby-identifier">run_file_date</span> = <span class="ruby-identifier">max_as_of</span>.<span class="ruby-identifier">beginning_of_month</span>.<span class="ruby-identifier">next_month</span>
+    <span class="ruby-identifier">max_as_of</span>      = <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">maximum</span>(<span class="ruby-identifier">:as_of</span>)
+    <span class="ruby-identifier">run_file_date</span>  = <span class="ruby-identifier">max_as_of</span>.<span class="ruby-identifier">beginning_of_month</span>.<span class="ruby-identifier">next_month</span>
     <span class="ruby-identifier">last_file_date</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">beginning_of_month</span>
     <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">run_file_date</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">last_file_date</span>
       <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;https://dmf.ntis.gov/dmldata/monthly/MA#{run_file_date.strftime(&quot;%y%m%d&quot;)}&quot;</span>
       <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Loading file #{url}&quot;</span>
-      <span class="ruby-constant">DeathMasterFileLoader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">url</span>,<span class="ruby-identifier">run_file_date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y-%m-%d&quot;</span>)).<span class="ruby-identifier">load_file</span>
+      <span class="ruby-keyword kw">yield</span> <span class="ruby-node">&quot;Loading file #{url}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+      <span class="ruby-identifier">dmf</span> = <span class="ruby-constant">DeathMasterFileLoader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">url</span>, <span class="ruby-identifier">run_file_date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y-%m-%d&quot;</span>)){<span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>}
+      <span class="ruby-identifier">dmf</span>.<span class="ruby-identifier">load_file</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+      <span class="ruby-keyword kw">end</span>
       <span class="ruby-identifier">run_file_date</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">month</span>
     <span class="ruby-keyword kw">end</span>
   <span class="ruby-keyword kw">end</span>
@@ -152,7 +156,7 @@ loaded, and loads each missing file in sequence up to the current file.
 
         <div class="method-heading">
           <a href="#M000001" class="method-signature">
-          <span class="method-name">new</span><span class="method-args">(path_or_url,file_as_of)</span>
+          <span class="method-name">new</span><span class="method-args">(path_or_url, file_as_of) {|status if block_given?| ...}</span>
           </a>
         </div>
       
@@ -167,10 +171,10 @@ data is accurate.
           <div class="method-source-code" id="M000001-source">
 <pre>
 <span class="ruby-comment cmt"># File lib/ssn_validator/models/death_master_file_loader.rb, line 11</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">path_or_url</span>,<span class="ruby-identifier">file_as_of</span>)
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">path_or_url</span>, <span class="ruby-identifier">file_as_of</span>)
     <span class="ruby-ivar">@file_path_or_url</span> = <span class="ruby-identifier">path_or_url</span>
-    <span class="ruby-ivar">@file_as_of</span> = <span class="ruby-identifier">file_as_of</span>
-    <span class="ruby-identifier">valid?</span>
+    <span class="ruby-ivar">@file_as_of</span>       = <span class="ruby-identifier">file_as_of</span>
+    <span class="ruby-identifier">valid?</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>}
   <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
@@ -184,7 +188,7 @@ data is accurate.
 
         <div class="method-heading">
           <a href="#M000004" class="method-signature">
-          <span class="method-name">get_file_from_web</span><span class="method-args">()</span>
+          <span class="method-name">get_file_from_web</span><span class="method-args">() {|&quot;%d%% done (%d of %d&quot; % [(size * 100) / total, size, total])| ...}</span>
           </a>
         </div>
       
@@ -193,18 +197,18 @@ data is accurate.
             onclick="toggleCode('M000004-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000004-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/ssn_validator/models/death_master_file_loader.rb, line 46</span>
+<span class="ruby-comment cmt"># File lib/ssn_validator/models/death_master_file_loader.rb, line 47</span>
   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_file_from_web</span>
-    <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@file_path_or_url</span>)
+    <span class="ruby-identifier">uri</span>     = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@file_path_or_url</span>)
 
     <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">request_uri</span>)
-    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">basic_auth</span>(<span class="ruby-constant">SsnValidator</span><span class="ruby-operator">::</span><span class="ruby-constant">Ntis</span>.<span class="ruby-identifier">user_name</span>,<span class="ruby-constant">SsnValidator</span><span class="ruby-operator">::</span><span class="ruby-constant">Ntis</span>.<span class="ruby-identifier">password</span>)
+    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">basic_auth</span>(<span class="ruby-constant">SsnValidator</span><span class="ruby-operator">::</span><span class="ruby-constant">Ntis</span>.<span class="ruby-identifier">user_name</span>, <span class="ruby-constant">SsnValidator</span><span class="ruby-operator">::</span><span class="ruby-constant">Ntis</span>.<span class="ruby-identifier">password</span>)
 
-    <span class="ruby-identifier">http</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
-    <span class="ruby-identifier">http</span>.<span class="ruby-identifier">use_ssl</span> = (<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span> <span class="ruby-operator">==</span> <span class="ruby-value">443</span>)
+    <span class="ruby-identifier">http</span>             = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>)
+    <span class="ruby-identifier">http</span>.<span class="ruby-identifier">use_ssl</span>     = (<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span> <span class="ruby-operator">==</span> <span class="ruby-value">443</span>)
     <span class="ruby-identifier">http</span>.<span class="ruby-identifier">verify_mode</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span><span class="ruby-operator">::</span><span class="ruby-constant">VERIFY_NONE</span>
 
-    <span class="ruby-identifier">csv_file</span> = <span class="ruby-constant">Tempfile</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@file_path_or_url</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">'/'</span>).<span class="ruby-identifier">last</span>)    <span class="ruby-comment cmt"># create temp file for the raw file.</span>
+    <span class="ruby-identifier">csv_file</span>         = <span class="ruby-constant">Tempfile</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@file_path_or_url</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">'/'</span>).<span class="ruby-identifier">last</span>) <span class="ruby-comment cmt"># create temp file for the raw file.</span>
     <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">request</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">res</span><span class="ruby-operator">|</span>
       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;Invalid URL: #{@file_path_or_url}&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTPNotFound</span>)
       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;Authorization Required: Invalid username or password.  Set the variables SsnValidator::Ntis.user_name and SsnValidator::Ntis.password in your environment.rb file.&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTPUnauthorized</span>)
@@ -213,6 +217,7 @@ data is accurate.
         <span class="ruby-identifier">size</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">chunk</span>.<span class="ruby-identifier">size</span>
         <span class="ruby-identifier">csv_file</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">chunk</span>
         <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;%d%% done (%d of %d)&quot;</span> <span class="ruby-operator">%</span> [(<span class="ruby-identifier">size</span> <span class="ruby-operator">*</span> <span class="ruby-value">100</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">total</span>, <span class="ruby-identifier">size</span>, <span class="ruby-identifier">total</span>]
+        <span class="ruby-keyword kw">yield</span>(<span class="ruby-value str">&quot;%d%% done (%d of %d)&quot;</span> <span class="ruby-operator">%</span> [(<span class="ruby-identifier">size</span> <span class="ruby-operator">*</span> <span class="ruby-value">100</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">total</span>, <span class="ruby-identifier">size</span>, <span class="ruby-identifier">total</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
       <span class="ruby-keyword kw">end</span>
 
     <span class="ruby-keyword kw">end</span>
@@ -229,7 +234,7 @@ data is accurate.
 
         <div class="method-heading">
           <a href="#M000003" class="method-signature">
-          <span class="method-name">load_file</span><span class="method-args">()</span>
+          <span class="method-name">load_file</span><span class="method-args">() {|&quot;Converting file to csv format for Mysql import. This could take several minutes.&quot; if block_given?| ...}</span>
           </a>
         </div>
       
@@ -243,12 +248,13 @@ data is accurate.
 
     <span class="ruby-keyword kw">if</span> <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">ConnectionAdapters</span><span class="ruby-operator">::</span><span class="ruby-constant">MysqlAdapter</span>) <span class="ruby-operator">||</span> <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">ConnectionAdapters</span><span class="ruby-operator">::</span><span class="ruby-constant">JdbcAdapter</span>)
       <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Converting file to csv format for Mysql import.  This could take several minutes.&quot;</span>
+      <span class="ruby-keyword kw">yield</span> <span class="ruby-value str">&quot;Converting file to csv format for Mysql import.  This could take several minutes.&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
 
-      <span class="ruby-identifier">csv_file</span> = <span class="ruby-identifier">convert_file_to_csv</span>
+      <span class="ruby-identifier">csv_file</span> = <span class="ruby-identifier">convert_file_to_csv</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>}
 
-      <span class="ruby-identifier">bulk_mysql_update</span>(<span class="ruby-identifier">csv_file</span>)
+      <span class="ruby-identifier">bulk_mysql_update</span>(<span class="ruby-identifier">csv_file</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>}
     <span class="ruby-keyword kw">else</span>
-      <span class="ruby-identifier">active_record_file_load</span>
+      <span class="ruby-identifier">active_record_file_load</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>}
     <span class="ruby-keyword kw">end</span>
 
   <span class="ruby-keyword kw">end</span>
@@ -262,7 +268,7 @@ data is accurate.
 
         <div class="method-heading">
           <a href="#M000002" class="method-signature">
-          <span class="method-name">valid?</span><span class="method-args">()</span>
+          <span class="method-name">valid?</span><span class="method-args">() {|status if block_given?| ...}</span>
           </a>
         </div>
       
@@ -281,7 +287,7 @@ data is accurate.
     <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-ivar">@file_path_or_url</span>)
       <span class="ruby-ivar">@download_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-ivar">@file_path_or_url</span>)
     <span class="ruby-keyword kw">elsif</span> <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@file_path_or_url</span>).<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>)
-      <span class="ruby-ivar">@download_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">get_file_from_web</span>)
+      <span class="ruby-ivar">@download_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">get_file_from_web</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">status</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">status</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>})
     <span class="ruby-keyword kw">else</span>
       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ENOENT</span>, <span class="ruby-ivar">@file_path_or_url</span>)
     <span class="ruby-keyword kw">end</span>
