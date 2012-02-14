@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>Class: SsnValidator::Ssn</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/ssn_validator/models/ssn_validator.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-death_master_file_hit-3F">#death_master_file_hit?</a>
+    
+    <li><a href="#method-i-death_master_file_record">#death_master_file_record</a>
+    
+    <li><a href="#method-i-valid-3F">#valid?</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../LICENSE.html">LICENSE</a>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../SsnValidator.html">SsnValidator</a>
+  
+    <li><a href="../SsnValidator/Ntis.html">SsnValidator::Ntis</a>
+  
+    <li><a href="../SsnValidator/Ssn.html">SsnValidator::Ssn</a>
+  
+    <li><a href="../DeathMasterFile.html">DeathMasterFile</a>
+  
+    <li><a href="../DeathMasterFileLoader.html">DeathMasterFileLoader</a>
+  
+    <li><a href="../SsnHighGroupCode.html">SsnHighGroupCode</a>
+  
+    <li><a href="../SsnHighGroupCodeLoader.html">SsnHighGroupCodeLoader</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class SsnValidator::Ssn</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-area" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">area</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-as_of" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">as_of</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-errors" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">errors</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-group" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">group</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-serial_number" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">serial_number</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-ssn" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">ssn</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(ssn)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Instantiate the object passing in a social security number. The ssn can be
+a string or integer, with or without the ‘-’s.</p>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/ssn_validator/models/ssn_validator.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">ssn</span>)
+  <span class="ruby-ivar">@errors</span> = []
+  <span class="ruby-identifier">ssn</span> = <span class="ruby-identifier">ssn</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ssn</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/-/</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">ssn</span> <span class="ruby-operator">!~</span> <span class="ruby-regexp">/\d\d\d-\d\d-\d\d\d\d/</span>
+    <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">'Hyphen misplaced.'</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">ssn</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-string">'-'</span>,<span class="ruby-string">''</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ssn</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">!=</span> <span class="ruby-value">9</span>
+    <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span>  <span class="ruby-string">'SSN not 9 digits long.'</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ssn</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\D/</span>
+    <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">'Non-digit found.'</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment">#known dummy numbers</span>
+  <span class="ruby-keyword">if</span> [<span class="ruby-string">&quot;078051120&quot;</span>,<span class="ruby-string">&quot;111111111&quot;</span>,<span class="ruby-string">&quot;123456789&quot;</span>,<span class="ruby-string">&quot;219099999&quot;</span>,<span class="ruby-string">&quot;999999999&quot;</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">ssn</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">ssn</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-string">&quot;987654320&quot;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">ssn</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-string">&quot;987654329&quot;</span>)
+    <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;Known dummy SSN.&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment">#known invalid area, group and serial numbers</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ssn</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\d{3}00\d{4}|0000\Z/</span>
+    <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;Invalid group or serial number.&quot;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@ssn</span> = <span class="ruby-identifier">ssn</span>
+  <span class="ruby-ivar">@area</span> = <span class="ruby-identifier">ssn</span>.<span class="ruby-identifier">first</span>(<span class="ruby-value">3</span>)
+  <span class="ruby-ivar">@group</span> = <span class="ruby-identifier">ssn</span>[<span class="ruby-value">3</span>,<span class="ruby-value">2</span>]
+  <span class="ruby-ivar">@serial_number</span> = <span class="ruby-identifier">ssn</span>.<span class="ruby-identifier">last</span>(<span class="ruby-value">4</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@errors</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-ivar">@ssn_high_group_code</span> = <span class="ruby-constant">SsnHighGroupCode</span>.<span class="ruby-identifier">find_by_area</span>(<span class="ruby-ivar">@area</span>, <span class="ruby-value">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'as_of desc'</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@ssn_high_group_code</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;Area '#{@area}' has not been assigned.&quot;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@as_of</span> = <span class="ruby-ivar">@ssn_high_group_code</span>.<span class="ruby-identifier">as_of</span>
+
+      <span class="ruby-identifier">define_group_ranks</span>
+      
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@group_ranks</span>[<span class="ruby-ivar">@group</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@group_ranks</span>[<span class="ruby-ivar">@ssn_high_group_code</span>.<span class="ruby-identifier">group</span>]
+        <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;Group '#{@group}' has not been assigned yet for area '#{@area}'&quot;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-death_master_file_hit-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">death_master_file_hit?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Determines if the passed in ssn belongs to the deceased.</p>
+          
+
+          
+          <div class="method-source-code" id="death_master_file_hit-3F-source">
+            <pre><span class="ruby-comment"># File lib/ssn_validator/models/ssn_validator.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">death_master_file_hit?</span>
+  <span class="ruby-operator">!</span><span class="ruby-identifier">death_master_file_record</span>.<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- death_master_file_hit-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- death_master_file_hit-3F-method -->
+
+    
+      <div id="method-i-death_master_file_record" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">death_master_file_record</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>returns the death master record if there is one.</p>
+          
+
+          
+          <div class="method-source-code" id="death_master_file_record-source">
+            <pre><span class="ruby-comment"># File lib/ssn_validator/models/ssn_validator.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">death_master_file_record</span>
+  <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">find_by_social_security_number</span>(<span class="ruby-ivar">@ssn</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- death_master_file_record-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- death_master_file_record-method -->
+
+    
+      <div id="method-i-valid-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Determines whether or not the passed in ssn passed all validations.</p>
+          
+
+          
+          <div class="method-source-code" id="valid-3F-source">
+            <pre><span class="ruby-comment"># File lib/ssn_validator/models/ssn_validator.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid?</span>
+  <span class="ruby-ivar">@errors</span>.<span class="ruby-identifier">empty?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- valid-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- valid-3F-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
