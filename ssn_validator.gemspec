@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ssn_validator}
-  s.version = "1.0.9"
+  s.version = "1.0.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Kevin Tyll"]
-  s.date = %q{2011-03-07}
+  s.authors = [%q{Kevin Tyll}]
+  s.date = %q{2012-02-14}
   s.description = %q{Validates whether an SSN has likely been issued or not.}
   s.email = %q{kevintyll@gmail.com}
   s.extra_rdoc_files = [
@@ -37,6 +37,15 @@ Gem::Specification.new do |s|
     "lib/ssn_validator/models/ssn_validator.rb",
     "lib/ssn_validator/ntis.rb",
     "lib/tasks/ssn_validator.rake",
+    "rdoc/DeathMasterFile.html",
+    "rdoc/DeathMasterFileLoader.html",
+    "rdoc/LICENSE.html",
+    "rdoc/README_rdoc.html",
+    "rdoc/SsnHighGroupCode.html",
+    "rdoc/SsnHighGroupCodeLoader.html",
+    "rdoc/SsnValidator.html",
+    "rdoc/SsnValidator/Ntis.html",
+    "rdoc/SsnValidator/Ssn.html",
     "rdoc/classes/DeathMasterFile.html",
     "rdoc/classes/DeathMasterFileLoader.html",
     "rdoc/classes/SsnHighGroupCode.html",
@@ -57,8 +66,47 @@ Gem::Specification.new do |s|
     "rdoc/fr_class_index.html",
     "rdoc/fr_file_index.html",
     "rdoc/fr_method_index.html",
+    "rdoc/images/add.png",
+    "rdoc/images/brick.png",
+    "rdoc/images/brick_link.png",
+    "rdoc/images/bug.png",
+    "rdoc/images/bullet_black.png",
+    "rdoc/images/bullet_toggle_minus.png",
+    "rdoc/images/bullet_toggle_plus.png",
+    "rdoc/images/date.png",
+    "rdoc/images/delete.png",
+    "rdoc/images/find.png",
+    "rdoc/images/loadingAnimation.gif",
+    "rdoc/images/macFFBgHack.png",
+    "rdoc/images/package.png",
+    "rdoc/images/page_green.png",
+    "rdoc/images/page_white_text.png",
+    "rdoc/images/page_white_width.png",
+    "rdoc/images/plugin.png",
+    "rdoc/images/ruby.png",
+    "rdoc/images/tag_blue.png",
+    "rdoc/images/tag_green.png",
+    "rdoc/images/transparent.png",
+    "rdoc/images/wrench.png",
+    "rdoc/images/wrench_orange.png",
+    "rdoc/images/zoom.png",
     "rdoc/index.html",
+    "rdoc/js/darkfish.js",
+    "rdoc/js/jquery.js",
+    "rdoc/js/navigation.js",
+    "rdoc/js/search.js",
+    "rdoc/js/search_index.js",
+    "rdoc/js/searcher.js",
+    "rdoc/lib/ssn_validator/models/death_master_file_loader_rb.html",
+    "rdoc/lib/ssn_validator/models/death_master_file_rb.html",
+    "rdoc/lib/ssn_validator/models/ssn_high_group_code_loader_rb.html",
+    "rdoc/lib/ssn_validator/models/ssn_high_group_code_rb.html",
+    "rdoc/lib/ssn_validator/models/ssn_validator_rb.html",
+    "rdoc/lib/ssn_validator/ntis_rb.html",
+    "rdoc/lib/ssn_validator_rb.html",
     "rdoc/rdoc-style.css",
+    "rdoc/rdoc.css",
+    "rdoc/table_of_contents.html",
     "script/console",
     "script/destroy",
     "script/generate",
@@ -104,22 +152,14 @@ For more information on ssn_validator, see http://kevintyll.github.com/ssn_valid
         from the dmf.ntis.gov website.
         * The death master file data is updated monthly, so you'll want to run this rake task monthly to keep your validations accurate.
 }
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.9}
   s.summary = %q{Validates whether an SSN has likely been issued or not.}
-  s.test_files = [
-    "test/mocks/test/death_master_file_loader.rb",
-    "test/test_death_master_file_loader.rb",
-    "test/test_helper.rb",
-    "test/test_ssn_high_group_code_loader.rb",
-    "test/test_ssn_validator.rb"
-  ]
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
     else
     end
   else
