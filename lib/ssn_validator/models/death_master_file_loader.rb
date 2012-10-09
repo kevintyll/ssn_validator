@@ -1,7 +1,15 @@
 require 'net/http'
 require 'net/https'
 require 'active_record'
-require 'active_record/connection_adapters/mysql_adapter'
+begin
+  require 'active_record/connection_adapters/mysql2_adapter'
+rescue Gem::LoadError
+  begin
+    require 'active_record/connection_adapters/mysql_adapter'
+  rescue Gem::LoadError
+    puts 'Not using mysql, will use active record to load data'
+  end
+end
 require 'ssn_validator/ntis'
 
 class DeathMasterFileLoader
@@ -31,7 +39,7 @@ class DeathMasterFileLoader
 
   def load_file
 
-    if DeathMasterFile.connection.kind_of?(ActiveRecord::ConnectionAdapters::MysqlAdapter) || DeathMasterFile.connection.kind_of?(ActiveRecord::ConnectionAdapters::JdbcAdapter)
+    if DeathMasterFile.connection.kind_of?(ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter) || DeathMasterFile.connection.kind_of?(ActiveRecord::ConnectionAdapters::JdbcAdapter)
       puts "Converting file to csv format for Mysql import.  This could take several minutes."
       yield "Converting file to csv format for Mysql import.  This could take several minutes." if block_given?
 

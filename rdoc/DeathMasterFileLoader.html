@@ -165,7 +165,7 @@ loaded, and loads each missing file in sequence up to the current file.</p>
 
           
           <div class="method-source-code" id="load_update_files_from_web-source">
-            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 80</span>
+            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load_update_files_from_web</span>
   <span class="ruby-identifier">max_as_of</span> = <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:as_of</span>)
   <span class="ruby-identifier">run_file_date</span> = <span class="ruby-identifier">max_as_of</span>.<span class="ruby-identifier">beginning_of_month</span>.<span class="ruby-identifier">next_month</span>
@@ -209,7 +209,7 @@ data is accurate.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 11</span>
+            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">path_or_url</span>, <span class="ruby-identifier">file_as_of</span>)
   <span class="ruby-ivar">@file_path_or_url</span> = <span class="ruby-identifier">path_or_url</span>
   <span class="ruby-ivar">@file_as_of</span> = <span class="ruby-identifier">file_as_of</span>
@@ -247,7 +247,7 @@ data is accurate.</p>
 
           
           <div class="method-source-code" id="get_file_from_web-source">
-            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 47</span>
+            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_file_from_web</span>
   <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@file_path_or_url</span>)
 
@@ -303,10 +303,10 @@ data is accurate.</p>
 
           
           <div class="method-source-code" id="load_file-source">
-            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 32</span>
+            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 40</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">load_file</span>
 
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">ConnectionAdapters</span><span class="ruby-operator">::</span><span class="ruby-constant">MysqlAdapter</span>) <span class="ruby-operator">||</span> <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">ConnectionAdapters</span><span class="ruby-operator">::</span><span class="ruby-constant">JdbcAdapter</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">ConnectionAdapters</span><span class="ruby-operator">::</span><span class="ruby-constant">AbstractMysqlAdapter</span>) <span class="ruby-operator">||</span> <span class="ruby-constant">DeathMasterFile</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">ConnectionAdapters</span><span class="ruby-operator">::</span><span class="ruby-constant">JdbcAdapter</span>)
     <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Converting file to csv format for Mysql import.  This could take several minutes.&quot;</span>
     <span class="ruby-keyword">yield</span> <span class="ruby-string">&quot;Converting file to csv format for Mysql import.  This could take several minutes.&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
 
@@ -344,7 +344,7 @@ data is accurate.</p>
 
           
           <div class="method-source-code" id="valid-3F-source">
-            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 17</span>
+            <pre><span class="ruby-comment"># File lib/ssn_validator/models/death_master_file_loader.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">valid?</span>
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;path_or_url not specified&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@file_path_or_url</span>
   <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;as_of not specified&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@file_as_of</span>
