@@ -1,3 +1,7 @@
+== 1.1.0 2013-09-17
+
+* Update to a rails engine. (if this pull request is accepted)
+
 == 1.0.11 2012-10-09
 
 *  1 enhancement:

@@ -1,0 +1,2 @@
+  [1m[36mSsnValidator::SsnHighGroupCode Load (0.7ms)[0m  [1mSELECT "ssn_validator_ssn_high_group_codes".* FROM "ssn_validator_ssn_high_group_codes" WHERE "ssn_validator_ssn_high_group_codes"."area" = '666' AND (as_of <= '2013-09-15') ORDER BY as_of DESC LIMIT 1[0m
+SQLite3::SQLException: no such table: ssn_validator_ssn_high_group_codes: SELECT  "ssn_validator_ssn_high_group_codes".* FROM "ssn_validator_ssn_high_group_codes"  WHERE "ssn_validator_ssn_high_group_codes"."area" = '666' AND (as_of <= '2013-09-15')  ORDER BY as_of DESC LIMIT 1
