@@ -13,7 +13,7 @@ gemspec
 # To use debugger
 # gem 'debugger'
 
-gem 'rails', '>=3.1'
+gem 'rails', '>=3.0'
 
 group :test do
   gem 'shoulda'
