@@ -82,4 +82,25 @@ class TestSsnValidator < Test::Unit::TestCase
     assert !validator.death_master_file_hit?
   end
 
+  def test_death_master_file_hit_with_validation_date
+    create_death_master_file_table
+    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/files/test_dmf_initial_load.txt','2009-01-01').load_file
+
+    ssn = SsnValidator::Ssn.new('666781978', (Date.today - 5))
+    assert_equal (Date.today - 5), ssn.validation_date
+
+    ssn = SsnValidator::Ssn.new('666781978', (Date.today - 5).to_s)
+    assert_equal (Date.today - 5), ssn.validation_date
+
+    ssn = SsnValidator::Ssn.new('666781978', 'not a date')
+    assert_equal Date.today, ssn.validation_date
+
+    validator = SsnValidator::Ssn.new('772781978', '2008-01-01') # ssn from file with DMF date 2009
+    assert !validator.death_master_file_hit?
+
+    validator = SsnValidator::Ssn.new('666781978', '2011-01-01') # ssn not in file
+    assert_nil validator.death_master_file_record
+    assert !validator.death_master_file_hit?
+  end
+
 end

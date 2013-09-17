@@ -1,15 +1,18 @@
 module SsnValidator
   class Ssn
 
-    attr_reader :ssn,:area,:group,:serial_number,:as_of
+    attr_reader :ssn,:area,:group,:serial_number,:as_of,:validation_date
     attr_reader :errors
 
 
     #Instantiate the object passing in a social security number.
     #The ssn can be a string or integer, with or without the '-'s.
-    def initialize(ssn)
+    # Optional validation_date to support checking DMF as at a certain date. Defaults to today.
+    # Ie, was this SSN known to be deceased by the SSA as at a certain date.
+    def initialize(ssn, date=nil)
       @errors = []
       ssn = ssn.to_s
+      @validation_date = Date.parse(date.to_s) rescue Date.today
       if ssn =~ /-/ && ssn !~ /\d\d\d-\d\d-\d\d\d\d/
         @errors << 'Hyphen misplaced.'
       end
@@ -63,7 +66,7 @@ module SsnValidator
 
     #returns the death master record if there is one.
     def death_master_file_record
-      DeathMasterFile.find_by_social_security_number(@ssn)
+      DeathMasterFile.find(:conditions => 'social_security_number = ? and as_at <= ?', @ssn, @validation_date)
     end
 
     #Determines if the passed in ssn belongs to the deceased.
