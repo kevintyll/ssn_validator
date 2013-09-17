@@ -34,6 +34,9 @@ thanks goes to the management at Clarity Services Inc. for allowing this code to
 * Just instantiate the object with an SSN.
     ssn = SsnValidator::Ssn.new('123-45-6789')
 
+* Can also pass optional validation date, so you can see if the SSN would have been on the DMF file as at that date. Defaults to today.
+    ssn = SsnValidator::Ssn.new('123-45-6789', '2006-01-01')
+
 * Then check if it's valid
     ssn.valid?
     ssn.death_master_file_hit?
