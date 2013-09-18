@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + "../../../test_helper")
+require File.expand_path(File.dirname(__FILE__) + "../../test_helper")
 
 class SsnHighGroupCodeLoaderTest < ActiveSupport::TestCase
 
@@ -14,9 +14,5 @@ class SsnHighGroupCodeLoaderTest < ActiveSupport::TestCase
     record_count = SsnHighGroupCode.count
     SsnHighGroupCodeLoader.load_current_high_group_codes_file
     assert_equal(record_count, SsnHighGroupCode.count)
-  end
-
-  def setup
-    setup_high_group_codes_table
   end
 end

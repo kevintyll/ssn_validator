@@ -1,2 +1,57 @@
   [1m[36mSsnValidator::SsnHighGroupCode Load (0.7ms)[0m  [1mSELECT "ssn_validator_ssn_high_group_codes".* FROM "ssn_validator_ssn_high_group_codes" WHERE "ssn_validator_ssn_high_group_codes"."area" = '666' AND (as_of <= '2013-09-15') ORDER BY as_of DESC LIMIT 1[0m
 SQLite3::SQLException: no such table: ssn_validator_ssn_high_group_codes: SELECT  "ssn_validator_ssn_high_group_codes".* FROM "ssn_validator_ssn_high_group_codes"  WHERE "ssn_validator_ssn_high_group_codes"."area" = '666' AND (as_of <= '2013-09-15')  ORDER BY as_of DESC LIMIT 1
+  [1m[36m (1.8ms)[0m  [1mCREATE TABLE "ssn_validator_ssn_high_group_codes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "as_of" date, "area" varchar(255), "group" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (1.6ms)[0m  CREATE INDEX "idx_area" ON "ssn_validator_ssn_high_group_codes" ("area")
+  [1m[36m (1.5ms)[0m  [1mCREATE INDEX "idx_area_as_of" ON "ssn_validator_ssn_high_group_codes" ("area", "as_of")[0m
+  [1m[35m (1.6ms)[0m  CREATE TABLE "ssn_validator_death_master_files" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "social_security_number" varchar(255), "last_name" varchar(255), "name_suffix" varchar(255), "first_name" varchar(255), "middle_name" varchar(255), "verify_proof_code" varchar(255), "date_of_death" date, "date_of_birth" date, "state_of_residence" varchar(255), "last_known_zip_residence" varchar(255), "last_known_zip_payment" varchar(255), "created_at" datetime, "updated_at" datetime, "as_of" date) 
+  [1m[36m (1.5ms)[0m  [1mCREATE UNIQUE INDEX "idx_ssn" ON "ssn_validator_death_master_files" ("social_security_number")[0m
+  [1m[35m (1.5ms)[0m  CREATE INDEX "idx_as_of" ON "ssn_validator_death_master_files" ("as_of")
+  [1m[36m (1.7ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [1m[35m (1.4ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36m (0.1ms)[0m  [1mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (1.4ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('1')
+  [1m[36m (1.7ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [1m[35m (1.2ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateSsnValidatorDeathMasterFiles (20130914201438)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mCREATE TABLE "death_master_files" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "social_security_number" varchar(255), "last_name" varchar(255), "name_suffix" varchar(255), "first_name" varchar(255), "middle_name" varchar(255), "verify_proof_code" varchar(255), "date_of_death" date, "date_of_birth" date, "state_of_residence" varchar(255), "last_known_zip_residence" varchar(255), "last_known_zip_payment" varchar(255), "created_at" datetime, "updated_at" datetime, "as_of" date) [0m
+  [1m[35m (0.5ms)[0m  CREATE UNIQUE INDEX "idx_ssn" ON "death_master_files" ("social_security_number")
+  [1m[36m (0.2ms)[0m  [1mCREATE INDEX "idx_as_of" ON "death_master_files" ("as_of")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20130914201438"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to CreateSsnHighGroupCodes (20130914201538)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "ssn_high_group_codes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "as_of" date, "area" varchar(255), "group" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.2ms)[0m  CREATE INDEX "idx_area" ON "ssn_high_group_codes" ("area")
+  [1m[36m (0.2ms)[0m  [1mCREATE INDEX "idx_area_as_of" ON "ssn_high_group_codes" ("area", "as_of")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20130914201538"]]
+  [1m[36m (1.0ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (1.6ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [1m[35m (1.6ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateSsnValidatorDeathMasterFiles (20130914201438)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mCREATE TABLE "death_master_files" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "social_security_number" varchar(255), "last_name" varchar(255), "name_suffix" varchar(255), "first_name" varchar(255), "middle_name" varchar(255), "verify_proof_code" varchar(255), "date_of_death" date, "date_of_birth" date, "state_of_residence" varchar(255), "last_known_zip_residence" varchar(255), "last_known_zip_payment" varchar(255), "created_at" datetime, "updated_at" datetime, "as_of" date) [0m
+  [1m[35m (0.4ms)[0m  CREATE UNIQUE INDEX "idx_ssn" ON "death_master_files" ("social_security_number")
+  [1m[36m (0.1ms)[0m  [1mCREATE INDEX "idx_as_of" ON "death_master_files" ("as_of")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20130914201438"]]
+  [1m[36m (1.7ms)[0m  [1mcommit transaction[0m
+Migrating to CreateSsnHighGroupCodes (20130914201538)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "ssn_high_group_codes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "as_of" date, "area" varchar(255), "group" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.2ms)[0m  CREATE INDEX "idx_area" ON "ssn_high_group_codes" ("area")
+  [1m[36m (0.1ms)[0m  [1mCREATE INDEX "idx_area_as_of" ON "ssn_high_group_codes" ("area", "as_of")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20130914201538"]]
+  [1m[36m (1.5ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (1.8ms)[0m  [1mDROP TABLE "death_master_files"[0m
+  [1m[35m (1.5ms)[0m  CREATE TABLE "death_master_files" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "social_security_number" varchar(255), "last_name" varchar(255), "name_suffix" varchar(255), "first_name" varchar(255), "middle_name" varchar(255), "verify_proof_code" varchar(255), "date_of_death" date, "date_of_birth" date, "state_of_residence" varchar(255), "last_known_zip_residence" varchar(255), "last_known_zip_payment" varchar(255), "created_at" datetime, "updated_at" datetime, "as_of" date) 
+  [1m[36m (1.4ms)[0m  [1mCREATE INDEX "idx_as_of" ON "death_master_files" ("as_of")[0m
+  [1m[35m (1.3ms)[0m  CREATE UNIQUE INDEX "idx_ssn" ON "death_master_files" ("social_security_number")
+  [1m[36m (1.9ms)[0m  [1mDROP TABLE "ssn_high_group_codes"[0m
+  [1m[35m (1.2ms)[0m  CREATE TABLE "ssn_high_group_codes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "as_of" date, "area" varchar(255), "group" varchar(255), "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (1.2ms)[0m  [1mCREATE INDEX "idx_area_as_of" ON "ssn_high_group_codes" ("area", "as_of")[0m
+  [1m[35m (1.2ms)[0m  CREATE INDEX "idx_area" ON "ssn_high_group_codes" ("area")
+  [1m[36m (0.1ms)[0m  [1mSELECT version FROM "schema_migrations"[0m

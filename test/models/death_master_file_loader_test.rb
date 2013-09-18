@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + "../../../test_helper")
+require File.expand_path(File.dirname(__FILE__) + "../../test_helper")
 require 'net/http'
 require 'net/https'
 
@@ -33,22 +33,22 @@ class DeathMasterFileLoaderTest < ActiveSupport::TestCase
 
   def test_should_load_table_from_file
     assert_equal(0, DeathMasterFile.count)
-    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../../files/test_dmf_initial_load.txt', '2009-01-01').load_file
+    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../files/test_dmf_initial_load.txt', '2009-01-01').load_file
     assert DeathMasterFile.count == 5
     #load update file
     #update file adds 1 record, deletes 2 records, and changes 2 records
-    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../../files/test_dmf_update_load.txt', '2009-02-01').load_file
+    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../files/test_dmf_update_load.txt', '2009-02-01').load_file
     assert DeathMasterFile.count == 4
     assert 1, DeathMasterFile.where(last_name: 'NEW').count
     assert 2, DeathMasterFile.where(last_name: 'CHANGED').count
   end
 
   def test_should_not_load_table_if_as_of_already_in_table_for_load_file
-    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../../files/test_dmf_initial_load.txt', '2009-01-01').load_file
+    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../files/test_dmf_initial_load.txt', '2009-01-01').load_file
     assert DeathMasterFile.count > 0
     record_count = DeathMasterFile.count
     exception = assert_raise ArgumentError do
-      DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../../files/test_dmf_update_load.txt', '2008-01-01').load_file
+      DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../files/test_dmf_update_load.txt', '2008-01-01').load_file
     end
     assert_equal 'A more recent file has already been processed.  DB as_of date 2009-01-01', exception.message
     assert_equal(record_count, DeathMasterFile.count)
@@ -57,7 +57,7 @@ class DeathMasterFileLoaderTest < ActiveSupport::TestCase
   def test_should_load_all_unloaded_updates
     #initial load was 3 months ago
     initial_run = Date.today.beginning_of_month - 3.months
-    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../../files/test_dmf_initial_load.txt', initial_run.strftime('%Y-%m-%d')).load_file
+    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../files/test_dmf_initial_load.txt', initial_run.strftime('%Y-%m-%d')).load_file
     assert_equal 5, DeathMasterFile.count
     #this will load the last 3 months of files
     #mock the responses for the 3 monthly files
@@ -80,7 +80,7 @@ class DeathMasterFileLoaderTest < ActiveSupport::TestCase
   end
 
   def test_should_load_file_with_funky_data
-    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../../files/test_dmf_funky_data_load.txt', '2009-04-01').load_file
+    DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../files/test_dmf_funky_data_load.txt', '2009-04-01').load_file
     assert DeathMasterFile.count == 6
     DeathMasterFile.all.each do |dmf|
       # This is more of an issue with the bulk mysql load, but since, I'm using
@@ -92,9 +92,9 @@ class DeathMasterFileLoaderTest < ActiveSupport::TestCase
   def test_should_create_csv_file_for_mysql_import
     # I'm using sqlight3 for its in memory db, so I can't test the mysql load;
     # but I can test the csv file creation.
-    loader = DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../../files/test_dmf_funky_data_load.txt', '2009-11-30')
+    loader = DeathMasterFileLoader.new(File.dirname(__FILE__) + '/../files/test_dmf_funky_data_load.txt', '2009-11-30')
     csv = loader.convert_file_to_csv
-    correctly_formatted_csv = File.open(File.dirname(__FILE__) + '/../../files/valid_csv_from_funky_data_file.txt')
+    correctly_formatted_csv = File.open(File.dirname(__FILE__) + '/../files/valid_csv_from_funky_data_file.txt')
     #csv is open and at the end of the file, so we need to reopen it so we can read the lines.
     generated_file = File.open(csv.path).readlines
     #compare the values of each csv line, with the correctly formated "control file"
@@ -107,10 +107,6 @@ class DeathMasterFileLoaderTest < ActiveSupport::TestCase
         assert_equal correctly_formatted_record_array[i], csv_record_array[i]
       end
     end
-  end
-
-  def setup
-    setup_death_master_file_table
   end
 
 end
