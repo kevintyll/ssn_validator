@@ -1,4 +1,4 @@
-= ssn_validator
+= SsnValidator
 
 * http://kevintyll.github.com/ssn_validator
 * http://www.drexel-labs.com
@@ -27,7 +27,7 @@ thanks goes to the management at Clarity Services Inc. for allowing this code to
     Validate that an SSN actually belongs to a particular person.
 
 * What it's planned to do:
-    Determine when an SSN was issued...if i can find the historical data.  This can be used to further validate an SSN by comparing it to a Date of Birth.
+    Determine when an SSN was issued...if I can find the historical data.  This can be used to further validate an SSN by comparing it to a Date of Birth.
 
 == SYNOPSIS:
 
@@ -53,23 +53,23 @@ thanks goes to the management at Clarity Services Inc. for allowing this code to
 
 == REQUIREMENTS:
 
-* Rails 2.0.0 or greater
+* Rails 3.2.0 or greater
 
 == INSTALL:
 
 * To install the gem:
     sudo gem install kevintyll-ssn_validator
 * To create the necessary db migration, from the command line, run:
-    script/generate ssn_validator_migration
-* Require the gem in your environment.rb file in the Rails::Initializer block:
-    config.gem 'kevintyll-ssn_validator', :lib => 'ssn_validator'
+    rails generate ssn_validator_migration
+* Require the gem in your Gemfile:
+    gem 'kevintyll-ssn_validator'
 * To load your table with the current SSN data, from the command line, run:
     rake ssn_validator:update_data
 
     * The SSN data is updated monthly, so you'll want to run this rake task monthly to keep your validations accurate.
 
 * If you've purchased the death master file data, create the death_master_files migration:
-    script/generate death_master_file_migration
+    rails generate death_master_file_migration
 * To load the dmf files you receive from ntis:
     rake ssn_validator:death_master_file:load_file PATH='path/to/file' AS_OF='2009-03-01'
 
