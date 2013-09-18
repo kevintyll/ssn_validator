@@ -1,5 +1,5 @@
-*.DS_Store
-*.svn
-pkg
-nbproject
+.DS_Store
+.bundle/
+log/*.log
+pkg/
 *.idea
