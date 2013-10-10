@@ -65,7 +65,7 @@ class SsnHighGroupCodeLoader
 
   #extract the date from the file in the format mm/dd/yy
   def self.extract_as_of_date(text)
-    as_of_start_index = text =~ /\d\d\/\d\d\/\d\d/
+    as_of_start_index = text =~ /\d?\d\/\d\d\/\d\d/
     Date.strptime($&, '%m/%d/%y') unless as_of_start_index.nil?
   end
 
