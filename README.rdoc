@@ -3,6 +3,10 @@
 * http://kevintyll.github.com/ssn_validator
 * http://www.drexel-labs.com
 
+== Note:  
+The SSA has since changed how they assign SSNs, so there is no way to determine the validity SSN assignment.
+The death master file functionality is still valid.
+
 == DESCRIPTION:
 
 ssn_validator is a ruby gem that validates whether an SSN has likely been issued or not.
