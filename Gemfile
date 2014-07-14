@@ -7,7 +7,7 @@ gem 'rails', '>=3.0'
 
 group :test do
   # Pretty printed test output
-  gem 'turn'
+  #gem 'turn'
   gem 'sqlite3'
   gem 'shoulda'
   gem 'shoulda-matchers'
